@@ -177,19 +177,15 @@ p.lead{color:var(--muted);font-size:16px;line-height:1.45}
 
 /* ---------- scene 4: battle ---------- */
 #s4 .wrap{gap:10px;max-width:460px}
-.field{position:relative;width:100%;height:330px;border-radius:24px;overflow:hidden;
-  background:linear-gradient(180deg,#7fd3ff 0%,#bfeaff 52%,#8ed36f 52%,#6bbd52 100%)}
-.field:after{content:"";position:absolute;left:-10%;right:-10%;bottom:-30px;height:90px;background:radial-gradient(ellipse at 50% 0,#5aa845 0 60%,transparent 61%)}
-.cloud{position:absolute;background:#fff;border-radius:40px;opacity:.85;height:22px}
-.cloud:before,.cloud:after{content:"";position:absolute;background:#fff;border-radius:50%}
-.cloud:before{width:30px;height:30px;left:10px;top:-14px}.cloud:after{width:22px;height:22px;left:34px;top:-9px}
+.field{position:relative;width:100%;height:340px;border-radius:24px;overflow:hidden;background:#fbefe8}
+.field .room{position:absolute;inset:0;width:100%;height:100%}
 .hpbox{position:absolute;z-index:3;background:rgba(255,255,255,.92);color:var(--ink);border-radius:12px;padding:6px 10px;min-width:150px;box-shadow:0 4px 0 rgba(0,0,0,.15);text-align:left}
 .hpbox .n{font-weight:800;font-size:13px;display:flex;justify-content:space-between;gap:8px}
 .hpbox .hp{height:8px;border-radius:6px;background:#ddd;margin-top:4px;overflow:hidden}
 .hpbox .hp i{display:block;height:100%;width:100%;background:#3ccf6b;transition:width .5s ease, background .3s}
 .hpbox .num{font-size:11px;font-weight:700;color:#666;text-align:right;margin-top:2px}
-#hpE{left:10px;top:10px}#hpP{right:10px;bottom:12px}
-.fly{position:absolute;right:14px;top:30px;width:160px;height:130px;z-index:2;animation:bob 1.6s ease-in-out infinite}
+#hpE{left:10px;top:8px}#hpP{right:10px;bottom:12px}
+.fly{position:absolute;right:34px;top:50px;width:170px;height:110px;z-index:2;animation:bob 1.6s ease-in-out infinite}
 .fly svg{width:100%;height:100%;overflow:visible}
 .fly .wing{transform-box:fill-box;transform-origin:50% 100%;animation:flap .08s linear infinite alternate}
 .fly .wing.b{transform-origin:50% 0%}
@@ -204,7 +200,7 @@ p.lead{color:var(--muted);font-size:16px;line-height:1.45}
 @keyframes dive{50%{transform:translate(-150px,110px) rotate(-30deg) scale(1.2)}}
 .zzz{position:absolute;right:30px;top:10px;font-weight:900;font-size:22px;color:#4b3a8a;z-index:4;animation:zz 1.6s ease-in-out infinite}
 @keyframes zz{0%{opacity:0;transform:translate(0,10px)}50%{opacity:1}100%{opacity:0;transform:translate(14px,-20px)}}
-.hero{position:absolute;left:14px;bottom:8px;width:120px;height:156px;z-index:2;transition:transform .3s}
+.hero{position:absolute;left:6px;bottom:6px;width:136px;height:177px;z-index:2;transition:transform .3s}
 .hero.atk{animation:lunge .5s ease}
 .hero.ouch{animation:hurt .45s}
 .hero.hug{animation:hugA 1s ease}
@@ -341,7 +337,33 @@ p.lead{color:var(--muted);font-size:16px;line-height:1.45}
     <div class="kicker" style="margin-top:4px">Скилы</div>
     <div class="skills" id="cSkills"></div>
     <button class="btn" id="toFight">⚔️ В бой со стрекозой</button>
-    <div class="file" style="margin-top:30px">
+  </div>
+</section>
+
+<!-- 4. БОЙ -->
+<section class="scene" id="s4">
+  <div class="wrap">
+    <div class="kicker" id="bKick">Этап 4 · босс</div>
+    <div class="field" id="field">
+      <svg class="room" id="room" viewBox="0 0 400 300" preserveAspectRatio="xMidYMax slice"></svg>
+      <div class="hpbox" id="hpE"><div class="n"><span>Стрекоза Ужасная</span><span>ур.99</span></div><div class="hp"><i id="hpEbar"></i></div><div class="num" id="hpEnum">100/100</div></div>
+      <div class="fly" id="fly"></div>
+      <div class="hero" id="hero"></div>
+      <div class="hpbox" id="hpP"><div class="n"><span>Полина</span><span id="hpPlv">ур.1</span></div><div class="hp"><i id="hpPbar"></i></div><div class="num" id="hpPnum">40/40</div></div>
+      <div class="endcard hide" id="bEnd"></div>
+    </div>
+    <div class="log" id="log">Дикая Стрекоза Ужасная выпрыгнула из ниоткуда!</div>
+    <div class="moves" id="moves"></div>
+  </div>
+</section>
+
+<!-- 5. ИНФОРМАЦИЯ О ПЕРСОНАЖЕ -->
+<section class="scene" id="s5">
+  <div class="wrap">
+    <div class="kicker">Игра пройдена · 100%</div>
+    <h2>Информация о персонаже</h2>
+    <div class="model" id="fModel" style="margin:6px 0 10px"></div>
+    <div class="file" style="margin-top:26px">
       <div class="head">
         <div class="ph" style="background-image:url(media/face.jpg)"></div>
         <div>
@@ -361,30 +383,12 @@ p.lead{color:var(--muted);font-size:16px;line-height:1.45}
         <small>Лечению не подлежит. И не надо. Побочный эффект: при встрече с очень вкусной едой издаёт непечатные звуки (#@%&!). Наука бессильна.</small>
       </div>
     </div>
-    <button class="btn" id="toFight2">⚔️ В бой со стрекозой</button>
+    <button class="btn y" id="go6">Финал →</button>
   </div>
 </section>
 
-<!-- 4. БОЙ -->
-<section class="scene" id="s4">
-  <div class="wrap">
-    <div class="kicker" id="bKick">Этап 4 · босс</div>
-    <div class="field" id="field">
-      <div class="cloud" style="width:70px;left:30px;top:120px"></div>
-      <div class="cloud" style="width:56px;left:180px;top:36px;opacity:.6"></div>
-      <div class="hpbox" id="hpE"><div class="n"><span>Стрекоза Ужасная</span><span>ур.99</span></div><div class="hp"><i id="hpEbar"></i></div><div class="num" id="hpEnum">100/100</div></div>
-      <div class="fly" id="fly"></div>
-      <div class="hero" id="hero"></div>
-      <div class="hpbox" id="hpP"><div class="n"><span>Полина</span><span id="hpPlv">ур.1</span></div><div class="hp"><i id="hpPbar"></i></div><div class="num" id="hpPnum">40/40</div></div>
-      <div class="endcard hide" id="bEnd"></div>
-    </div>
-    <div class="log" id="log">Дикая Стрекоза Ужасная выпрыгнула из ниоткуда!</div>
-    <div class="moves" id="moves"></div>
-  </div>
-</section>
-
-<!-- 5. ПОЖЕЛАНИЯ -->
-<section class="scene" id="s5">
+<!-- 6. ПОЖЕЛАНИЯ -->
+<section class="scene" id="s6">
   <div class="wrap">
     <div class="big22">22</div>
     <h2>Квесты на новый уровень</h2>
@@ -660,7 +664,7 @@ const STATS=[
 ];
 const st=$('#stats');
 STATS.forEach(([n,v,c,e])=>{st.insertAdjacentHTML('beforeend',`<div class="stat"><div class="l"><span>${n}</span><span>${v}</span></div><div class="b"><i style="background:${c}" data-w="${v}"></i></div><em>${e}</em></div>`)});
-onEnter[3]=()=>{ st.querySelectorAll('.b i').forEach(i=>i.style.width='0'); setTimeout(()=>st.querySelectorAll('.b i').forEach((i,k)=>setTimeout(()=>i.style.width=i.dataset.w+'%',k*160)),300) };
+onEnter[5]=()=>{ const fm=$('#fModel'); if(!fm.firstChild){fm.innerHTML=modelSVG()} setF(fm,FAT[4]); st.querySelectorAll('.b i').forEach(i=>i.style.width='0'); setTimeout(()=>st.querySelectorAll('.b i').forEach((i,k)=>setTimeout(()=>i.style.width=i.dataset.w+'%',k*160)),300) };
 /* ---------- character ---------- */
 const FAT=[.72,.72,1,1.3,1.65], HPS=[40,40,60,80,100];
 const BODY=['тростинка','тростинка','уютная','пухляш','сдобная булочка'];
@@ -670,31 +674,41 @@ const SKILLS=[
   {k:'mat',lv:3,ic:'🤬',n:'Мат',d:'#@%&! 35 урона моральным ущербом. Будит спящих. 1 раз за бой'},
   {k:'jar',lv:4,ic:'🫙',n:'Банка',d:'Ловит стрекозу, если она спит или ослаблена (HP ≤ 60)'}
 ];
+const CL='#4a3346',SKIN='#f7d9c8';
 let modelId=0;
-function modelSVG(){const id=++modelId;return `<svg viewBox="0 0 200 260"><defs>
-<pattern id="pl${id}" width="14" height="14" patternUnits="userSpaceOnUse"><rect width="14" height="14" fill="#c71f2d"/><rect y="5" width="14" height="4" fill="#7d0f1a" opacity=".85"/><rect x="5" width="4" height="14" fill="#7d0f1a" opacity=".85"/><rect y="12" width="14" height="1" fill="#000" opacity=".5"/><rect x="12" width="1" height="14" fill="#000" opacity=".5"/></pattern>
-<clipPath id="fc${id}"><circle cx="100" cy="58" r="34"/></clipPath></defs>
-<ellipse class="shd" cx="100" cy="252" rx="56" ry="7" fill="rgba(0,0,0,.25)"/>
-<g class="bod">
-<rect x="66" y="182" width="32" height="62" rx="12" fill="url(#pl${id})"/><rect x="102" y="182" width="32" height="62" rx="12" fill="url(#pl${id})"/>
-<ellipse cx="80" cy="246" rx="18" ry="8" fill="#fff"/><ellipse cx="120" cy="246" rx="18" ry="8" fill="#fff"/>
-<rect x="62" y="170" width="76" height="30" rx="12" fill="url(#pl${id})"/>
-<rect x="42" y="104" width="17" height="68" rx="8" fill="#151515" transform="rotate(12 50 108)"/><rect x="141" y="104" width="17" height="68" rx="8" fill="#151515" transform="rotate(-12 150 108)"/>
-<circle cx="38" cy="172" r="9" fill="#efc2a9"/><circle cx="162" cy="172" r="9" fill="#efc2a9"/>
-<path d="M58 104 Q100 92 142 104 L148 166 Q100 194 52 166 Z" fill="#151515"/>
-<text x="100" y="148" text-anchor="middle" font-family="Unbounded,Rubik,sans-serif" font-weight="900" font-size="24" fill="#ffd23f">22</text>
+function modelSVG(){const id=++modelId;return `<svg viewBox="0 0 200 260" overflow="visible"><defs><linearGradient id="chg${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a3626"/><stop offset="1" stop-color="#3a2218"/></linearGradient>
+<radialGradient id="cig${id}" cx=".5" cy=".75" r=".7"><stop offset="0" stop-color="#b8784a"/><stop offset="1" stop-color="#3e2114"/></radialGradient></defs>
+<ellipse class="shd" cx="100" cy="250" rx="50" ry="6" fill="rgba(0,0,0,.15)"/>
+<path d="M38 96Q36 30 100 26Q164 30 162 96Q166 128 150 146Q100 152 50 146Q34 128 38 96Z" fill="url(#chg${id})" stroke="${CL}" stroke-width="3.5"/>
+<g class="fat">
+<rect x="84" y="222" width="13" height="18" fill="#2f3036" stroke="${CL}" stroke-width="3"/><rect x="103" y="222" width="13" height="18" fill="#2f3036" stroke="${CL}" stroke-width="3"/>
+<ellipse cx="89" cy="244" rx="12" ry="6" fill="#5a3d2e" stroke="${CL}" stroke-width="3"/><ellipse cx="111" cy="244" rx="12" ry="6" fill="#5a3d2e" stroke="${CL}" stroke-width="3"/>
+<path d="M66 156q34-12 68 0l8 70H58z" fill="#6b6c40" stroke="${CL}" stroke-width="3" stroke-linejoin="round"/>
+<ellipse class="belly" cx="100" cy="198" rx="0" ry="0" fill="#6b6c40" stroke="${CL}" stroke-width="3"/>
+<path d="M100 152v74" stroke="${CL}" stroke-width="2.5"/>
+<circle cx="100" cy="176" r="2.5" fill="${CL}"/><circle cx="100" cy="196" r="2.5" fill="${CL}"/>
+<path d="M74 150q26 16 52 0q-6-12-26-12t-26 12z" fill="#7c818c" stroke="${CL}" stroke-width="3"/>
+<path d="M66 160q-18 12-14 46h16q0-22 6-32z" fill="#626338" stroke="${CL}" stroke-width="3" stroke-linejoin="round"/><path d="M134 160q18 12 14 46h-16q0-22-6-32z" fill="#626338" stroke="${CL}" stroke-width="3" stroke-linejoin="round"/>
+<path d="M78 158l2 40M122 158l-2 40" stroke="#222" stroke-width="5" stroke-linecap="round"/>
 </g>
-<rect x="91" y="84" width="18" height="18" fill="#e3b49b"/>
-<ellipse cx="100" cy="60" rx="44" ry="47" fill="#3b2418"/>
-<image href="media/face.jpg" x="64" y="22" width="72" height="72" clip-path="url(#fc${id})" preserveAspectRatio="xMidYMid slice"/>
-<circle cx="100" cy="58" r="34" fill="none" stroke="#3b2418" stroke-width="3"/>
-<ellipse class="chin" cx="100" cy="95" rx="0" ry="0" fill="#e9bba3" stroke="#d29c84" stroke-width="1.5"/>
+<ellipse class="face" cx="100" cy="100" rx="54" ry="50" fill="${SKIN}" stroke="${CL}" stroke-width="3.5"/>
+${[[78,108],[122,108]].map(([x,y])=>`<ellipse cx="${x}" cy="${y}" rx="11" ry="14" fill="url(#cig${id})" stroke="${CL}" stroke-width="2.5"/><ellipse cx="${x}" cy="${y+3}" rx="5" ry="7" fill="#1e0f09"/><circle cx="${x-4}" cy="${y-5}" r="4" fill="#fff"/><circle cx="${x+4}" cy="${y+6}" r="2" fill="#fff"/><path d="M${x-13} ${y-9}Q${x} ${y-20} ${x+13} ${y-9}" stroke="${CL}" stroke-width="4" fill="none" stroke-linecap="round"/>`).join('')}
+<path d="M64 84q10-6 20-1M116 83q10-5 20 1" stroke="${CL}" stroke-width="3" fill="none" stroke-linecap="round"/>
+<ellipse class="ck" cx="66" cy="126" rx="9" ry="5" fill="#ff9aa8" opacity=".55"/><ellipse class="ck" cx="134" cy="126" rx="9" ry="5" fill="#ff9aa8" opacity=".55"/>
+<g fill="#c98a6c"><circle cx="90" cy="122" r="1.3"/><circle cx="95" cy="126" r="1.1"/><circle cx="105" cy="126" r="1.1"/><circle cx="110" cy="122" r="1.3"/></g>
+<path d="M92 134q8 6 16-2" stroke="${CL}" stroke-width="3" fill="none" stroke-linecap="round"/><ellipse cx="108" cy="134.5" rx="4" ry="3" fill="#ff7d8c" stroke="${CL}" stroke-width="2"/>
+<path d="M44 100Q36 34 100 30Q164 34 156 100Q150 76 138 66Q136 82 120 84Q124 66 112 58Q102 76 84 80Q92 64 86 56Q72 74 56 82Q48 90 44 100Z" fill="url(#chg${id})" stroke="${CL}" stroke-width="3.5" stroke-linejoin="round"/>
+<path d="M40 76Q42 18 100 16Q158 18 160 76Q130 60 100 60Q70 60 40 76Z" fill="#a3a2aa" stroke="${CL}" stroke-width="3.5" stroke-linejoin="round"/>
+<path d="M50 44L44 4L80 24ZM150 44L156 4L120 24Z" fill="#a3a2aa" stroke="${CL}" stroke-width="3.5" stroke-linejoin="round"/><path d="M53 32L50 16L66 25ZM147 32L150 16L134 25Z" fill="#f3b6c6"/>
+<path d="M60 52q8-6 16-4M84 44q8-4 16-4M124 48q8 0 16 4" stroke="#8e8d95" stroke-width="2" fill="none" stroke-linecap="round"/>
 </svg>`}
 function setF(el,f){
-  el.querySelector('.bod').setAttribute('transform',`translate(100 0) scale(${f} 1) translate(-100 0)`);
-  el.querySelector('.shd').setAttribute('rx',56*f);
-  const c=el.querySelector('.chin'); const k=Math.max(0,f-1.1);
-  c.setAttribute('rx',k?14+k*16:0); c.setAttribute('ry',k?4+k*6:0);
+  const k=Math.max(0,f-1);
+  el.querySelector('.fat').setAttribute('transform',`translate(100 0) scale(${f} 1) translate(-100 0)`);
+  el.querySelector('.shd').setAttribute('rx',50*f);
+  const b=el.querySelector('.belly'); b.setAttribute('rx',k?22+k*10:0); b.setAttribute('ry',k?14+k*14:0); b.setAttribute('cy',200+k*6);
+  const fc=el.querySelector('.face'); fc.setAttribute('rx',54+k*12); fc.setAttribute('ry',50+k*3);
+  el.querySelectorAll('.ck').forEach((c,i)=>{c.setAttribute('rx',9+k*6);c.setAttribute('ry',5+k*3);c.setAttribute('cx',i?134+k*8:66-k*8)});
 }
 function tweenF(el,a,b,ms=1200){const t0=performance.now();const f=n=>{const k=Math.min(1,(n-t0)/ms);const e=k<1?1+Math.sin(k*Math.PI*3)*(1-k)*.25:1;setF(el,a+(b-a)*Math.min(1,k*1.4)*e);if(k<1)requestAnimationFrame(f)};requestAnimationFrame(f)}
 const P={level:0,eaten:0}; let pendingLvl=false;
@@ -708,27 +722,44 @@ onEnter[3]=()=>{
   $('#cLv').textContent=`Ур. ${P.level}`; $('#cHp').textContent=HPS[P.level]; $('#cEat').textContent=P.eaten; $('#cBody').textContent=BODY[P.level];
   $('#cNext').textContent=P.level<4?`Следующий уровень: ещё один заход за едой`:'Максимальный уровень. Абсолютная булочка.';
   $('#cSkills').innerHTML=SKILLS.map(s=>`<div class="skill ${s.lv>P.level?'locked':''} ${s.k===fresh?'new':''}"><b>${s.lv>P.level?'🔒':s.ic} ${s.n}</b>${s.lv>P.level?`Откроется на ур. ${s.lv}`:s.d}</div>`).join('');
-  st.querySelectorAll('.b i').forEach(i=>i.style.width='0'); setTimeout(()=>st.querySelectorAll('.b i').forEach((i,k)=>setTimeout(()=>i.style.width=i.dataset.w+'%',k*160)),300);
 };
-$('#toFight').onclick=$('#toFight2').onclick=()=>show(4);
+$('#toFight').onclick=()=>show(4);
+$('#go6').onclick=()=>show(6);
 
 /* ---------- battle ---------- */
-const FLY=`<svg viewBox="0 0 160 130">
-<g fill="#bfefff" fill-opacity=".75" stroke="#5fb8d6" stroke-width="1.5">
-<ellipse class="wing" cx="78" cy="34" rx="42" ry="11" transform="rotate(-14 78 34)"/><ellipse class="wing" cx="98" cy="36" rx="38" ry="10" transform="rotate(10 98 36)"/>
-<ellipse class="wing b" cx="78" cy="86" rx="40" ry="10" transform="rotate(14 78 86)"/><ellipse class="wing b" cx="98" cy="84" rx="36" ry="9" transform="rotate(-10 98 84)"/></g>
-<g stroke="#1b4d57" stroke-width="3" stroke-linecap="round"><path d="M60 72l-8 16M70 74l-2 18M78 72l6 16"/></g>
-<g fill="#16a3b5">${[0,1,2,3,4,5,6].map(i=>`<ellipse cx="${92+i*9.5}" cy="${62+i*.6}" rx="${8-i*.5}" ry="${7-i*.45}"/>`).join('')}</g>
-<ellipse cx="68" cy="60" rx="17" ry="14" fill="#118a9a"/>
-<circle cx="38" cy="50" r="15" fill="#3be38a"/><circle cx="46" cy="66" r="15" fill="#3be38a"/>
-<circle cx="34" cy="46" r="4" fill="#fff"/><circle cx="42" cy="62" r="4" fill="#fff"/>
-<circle cx="40" cy="52" r="5" fill="#0b2a1a"/><circle cx="48" cy="68" r="5" fill="#0b2a1a"/>
-<path d="M28 36l20 10M36 56l18 4" stroke="#0b2a1a" stroke-width="4" stroke-linecap="round"/>
-<path d="M26 74q8-6 14 2" stroke="#0b2a1a" stroke-width="3" fill="none" stroke-linecap="round"/>
-</svg>`;
+const FLY=`<svg viewBox="0 0 200 120" overflow="visible"><g stroke="${CL}" stroke-width="3" stroke-linejoin="round">
+ <ellipse class="wing" cx="112" cy="22" rx="54" ry="20" fill="#dff4ff" fill-opacity=".9" transform="rotate(-20 112 22)"/>
+ <ellipse class="wing" cx="146" cy="30" rx="48" ry="17" fill="#dff4ff" fill-opacity=".9" transform="rotate(12 146 30)"/>
+ <ellipse class="wing b" cx="112" cy="98" rx="52" ry="19" fill="#dff4ff" fill-opacity=".9" transform="rotate(20 112 98)"/>
+ <ellipse class="wing b" cx="146" cy="90" rx="46" ry="16" fill="#dff4ff" fill-opacity=".9" transform="rotate(-12 146 90)"/>
+ <path d="M82 22q30-6 70-2M98 30q24 2 48 6M82 98q30 6 70 2M98 90q24-2 48-6" stroke="#9fd2ea" stroke-width="2" fill="none"/>
+ ${[0,1,2,3].map(i=>`<circle cx="${140+i*16}" cy="60" r="${11-i*1.5}" fill="${i%2?'#3fb4e8':'#4fd0d6'}"/>`).join('')}
+ <ellipse cx="108" cy="60" rx="20" ry="17" fill="#36b7c9"/>
+ <circle cx="66" cy="58" r="34" fill="#5fe08e"/>
+ <ellipse cx="54" cy="56" rx="10" ry="13" fill="#fff"/><ellipse cx="80" cy="56" rx="10" ry="13" fill="#fff"/>
+ <ellipse cx="56" cy="59" rx="6" ry="8" fill="${CL}"/><ellipse cx="78" cy="59" rx="6" ry="8" fill="${CL}"/>
+ <circle cx="54" cy="55" r="2.5" fill="#fff" stroke="none"/><circle cx="76" cy="55" r="2.5" fill="#fff" stroke="none"/>
+ <path d="M42 40l18 8M92 40l-18 8" stroke-width="5" stroke-linecap="round"/>
+ <path d="M58 80q8-6 16 0" fill="none" stroke-linecap="round"/>
+ <path d="M44 22c-4-12 6-14 8-4M88 22c4-12-6-14-8-4" fill="none" stroke-linecap="round"/>
+ <path d="M96 4h6v-6h4v6h6v4h-6v6h-4v-6h-6z" fill="#ff4d5e" stroke="none"/>
+</g></svg>`;
+const ROOM=`<rect width="400" height="300" fill="#fbefe8"/>
+<rect x="140" y="34" width="190" height="170" rx="14" fill="#bfe0f2" stroke="${CL}" stroke-width="4"/>
+<g fill="#a6c1d8"><rect x="152" y="120" width="30" height="84" rx="6"/><rect x="188" y="92" width="36" height="112" rx="6"/><rect x="232" y="130" width="26" height="74" rx="6"/><rect x="264" y="104" width="34" height="100" rx="6"/><rect x="302" y="140" width="22" height="64" rx="6"/></g>
+<circle cx="296" cy="64" r="14" fill="#fff6c9"/><path d="M235 34v170" stroke="${CL}" stroke-width="4"/>
+<path d="M140 168h190" stroke="${CL}" stroke-width="3"/>${Array.from({length:12},(_,i)=>`<path d="M${150+i*15} 168v36" stroke="${CL}" stroke-width="3"/>`).join('')}
+<path d="M118 22q16 100 6 196h30q8-100-6-196z" fill="#6f8fb0" stroke="${CL}" stroke-width="4" stroke-linejoin="round"/>
+<path d="M352 22q-16 100-6 196h-30q-8-100 6-196z" fill="#6f8fb0" stroke="${CL}" stroke-width="4" stroke-linejoin="round"/>
+<rect x="110" y="16" width="250" height="8" rx="4" fill="${CL}"/>
+<rect y="222" width="400" height="78" fill="#f2d7b6"/><path d="M0 222h400" stroke="${CL}" stroke-width="4"/><path d="M0 256h400M0 286h400" stroke="#e2c19c" stroke-width="3"/>
+<path d="M70 0v24" stroke="${CL}" stroke-width="3"/><path d="M48 28h44l-6 10H54z" fill="#ffd9a8" stroke="${CL}" stroke-width="3" stroke-linejoin="round"/>
+${[-16,0,16].map((x,i)=>`<path d="M${70+x} 38v${10+i%2*8}" stroke="${CL}" stroke-width="2"/><path d="M${70+x} ${50+i%2*8}c-5-5-8 2 0 8 8-6 5-13 0-8z" fill="#ff8fb3" stroke="${CL}" stroke-width="2"/>`).join('')}
+<g transform="translate(262 178)" stroke="${CL}" stroke-width="4" stroke-linejoin="round"><rect x="0" y="14" width="128" height="46" rx="16" fill="#d7cfe0"/><rect x="-8" y="2" width="26" height="58" rx="12" fill="#c9bfd6"/><rect x="110" y="2" width="26" height="58" rx="12" fill="#c9bfd6"/><circle cx="46" cy="10" r="14" fill="#ffc2d6"/><circle cx="80" cy="12" r="11" fill="#fff"/></g>
+<g fill="none" stroke="${CL}" stroke-width="4" stroke-linecap="round"><path d="M20 170q0-34 26-34t26 34v62M20 170v62M14 206h64"/></g>`;
 const JAR=`<svg viewBox="0 0 130 150"><rect x="14" y="20" width="102" height="122" rx="18" fill="rgba(235,248,255,.45)" stroke="#fff" stroke-width="4"/><rect x="8" y="8" width="114" height="20" rx="6" fill="#f2f2f2" stroke="#cfd8e0" stroke-width="3"/><path d="M30 40v80" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity=".7"/></svg>`;
 const fly=$('#fly'), hero=$('#hero'), field=$('#field'), logEl=$('#log');
-fly.innerHTML=FLY; hero.innerHTML=modelSVG();
+fly.innerHTML=FLY; hero.innerHTML=modelSVG(); $('#room').innerHTML=ROOM;
 let B=null;
 const wait=ms=>new Promise(r=>setTimeout(r,ms));
 const rnd=a=>a[Math.floor(Math.random()*a.length)];
@@ -819,7 +850,7 @@ function win(){
 function anim(el,pel,from,to,ms,fmt){return new Promise(res=>{const t0=performance.now();
   const f=now=>{const k=Math.min(1,(now-t0)/ms),e=1-Math.pow(1-k,3),v=from+(to-from)*e; el.style.width=Math.min(100,v)+'%'; pel.textContent=fmt?fmt(v):Math.round(v)+'%'; k<1?requestAnimationFrame(f):res()}; requestAnimationFrame(f)})}
 let wishRun=0;
-onEnter[5]=async()=>{
+onEnter[6]=async()=>{
   const id=++wishRun; const ok=()=>id===wishRun;
   ['q1','q2','q3'].forEach(q=>{$('#'+q).style.width='0';$('#'+q+'p').textContent='0%';$('#'+q+'n').textContent=''});
   confetti(160);
