@@ -83,6 +83,16 @@ p.lead{color:var(--muted);font-size:16px;line-height:1.45}
 .gift.open .bow{transform:translate(-90px,-80px) rotate(-50deg);opacity:0;transition:transform .7s ease,opacity .6s ease .2s}
 .gift .cat{position:absolute;left:50%;bottom:60px;font-size:90px;margin-left:-50px;transform:translateY(70px) scale(.3);opacity:0;transition:all .6s cubic-bezier(.3,1.7,.5,1) .25s;z-index:-1}
 .gift.open .cat{transform:translateY(-40px) scale(1);opacity:1}
+.sign{width:100%;max-width:360px;display:flex;flex-direction:column;gap:10px;align-items:center}
+.sigpad{position:relative;width:100%;height:150px;background:#fffdf6;border-radius:16px;box-shadow:inset 0 0 0 2px #e6dcc6,0 10px 24px rgba(0,0,0,.3);overflow:hidden;touch-action:none}
+.sigpad canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:crosshair}
+.sigline{position:absolute;left:18px;right:18px;bottom:34px;display:flex;align-items:end;gap:6px;pointer-events:none;color:#b9ab8c;font-weight:700}
+.sigline i{flex:1;border-bottom:2px dashed #cdbf9f;margin-bottom:4px}
+.sighint{position:absolute;left:0;right:0;top:44px;text-align:center;color:#cdbf9f;font-size:15px;pointer-events:none;transition:opacity .3s}
+.sigstamp{position:absolute;right:14px;top:12px;border:3px solid #d6336c;color:#d6336c;font-family:Unbounded;font-weight:900;font-size:15px;padding:4px 10px;border-radius:8px;transform:rotate(8deg) scale(2.4);opacity:0;pointer-events:none;transition:transform .35s cubic-bezier(.3,1.6,.5,1),opacity .2s}
+.sigstamp.on{opacity:.9;transform:rotate(8deg) scale(1)}
+.btn[disabled]{opacity:.45;pointer-events:none}
+.sigimg{height:44px;max-width:160px;object-fit:contain;background:#fffdf6;border-radius:6px;padding:2px 6px;border:1px solid #e3d6b8}
 .bubble{position:relative;background:#fff;color:var(--ink);font-weight:700;padding:12px 16px;border-radius:18px;font-size:16px;line-height:1.3;max-width:300px}
 .bubble:after{content:"";position:absolute;left:50%;top:-10px;margin-left:-10px;border:10px solid transparent;border-top:0;border-bottom-color:#fff}
 .taps{display:flex;gap:8px}
@@ -258,8 +268,19 @@ p.lead{color:var(--muted);font-size:16px;line-height:1.45}
       <div class="tag">для П. ❤</div>
     </div>
     <div class="taps" id="taps"><i></i><i></i><i></i><i></i><i></i></div>
-    <div class="bubble hide" id="catSay">Мяу! Тебе 22! Я котик-курьер, распишись тут: ✍️</div>
-    <button class="btn y hide" id="go1">Расписаться и идти дальше →</button>
+    <div class="bubble hide" id="catSay">Мяу! Тебе 22! Я котик-курьер. Распишись в получении, пальцем прямо тут: ✍️</div>
+    <div class="sign hide" id="signBox">
+      <div class="sigpad" id="sigpad">
+        <canvas id="sig"></canvas>
+        <div class="sigline"><span>✕</span><i></i></div>
+        <div class="sighint" id="sigHint">распишись здесь</div>
+        <div class="sigstamp" id="sigStamp">ПОЛУЧЕНО ✓</div>
+      </div>
+      <div class="row">
+        <button class="btn ghost" id="sigClear">стереть</button>
+        <button class="btn y" id="go1" disabled>Подписать и открыть →</button>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -378,6 +399,7 @@ p.lead{color:var(--muted);font-size:16px;line-height:1.45}
         <dt>Путь ниндзя</dt><dd>Доучиться и не сдаться, даттебаё</dd>
         <dt>Досуг</dt><dd>Тейват, Берсерк, бокс-аниме, Рик и Морти, Южный Парк</dd>
       </dl>
+      <div class="hide" id="sigRow" style="display:flex;align-items:center;gap:10px;margin:-4px 0 12px;font-size:14px;color:#6b5d82">Подпись владельца: <img id="sigImg" class="sigimg" alt="подпись Полины"></div>
       <div id="stats"></div>
       <div class="diag">Диагноз: хронические хахаряшки.<br>
         <small>Лечению не подлежит. И не надо. Побочный эффект: при встрече с очень вкусной едой издаёт непечатные звуки (#@%&!). Наука бессильна.</small>
@@ -505,10 +527,37 @@ gift.addEventListener('click',()=>{
   if(taps<5){ toast(tapLines[taps-1]); return; }
   setTimeout(()=>{
     gift.classList.add('open'); sfx.meow(); confetti(160);
-    $('#catSay').classList.remove('hide'); $('#go1').classList.remove('hide'); $('#taps').classList.add('hide');
+    $('#catSay').classList.remove('hide'); $('#signBox').classList.remove('hide'); $('#taps').classList.add('hide'); setTimeout(sigInit,50);
   },250);
 });
-$('#go1').onclick=()=>show(1);
+/* signature pad */
+const sig=$('#sig'), sctx=sig.getContext('2d'); let sigLen=0, sigPts=null, sigURL='';
+function sigInit(){
+  const r=sig.getBoundingClientRect(), d=devicePixelRatio||1;
+  sig.width=r.width*d; sig.height=r.height*d; sctx.setTransform(d,0,0,d,0,0);
+  sctx.lineCap='round'; sctx.lineJoin='round'; sctx.strokeStyle='#1d2a6b'; sctx.lineWidth=3;
+}
+function sp(e){const r=sig.getBoundingClientRect();return {x:e.clientX-r.left,y:e.clientY-r.top}}
+sig.addEventListener('pointerdown',e=>{e.preventDefault(); try{sig.setPointerCapture(e.pointerId)}catch(_){}
+  sigPts=[sp(e)]; $('#sigHint').style.opacity=0; sctx.beginPath(); sctx.arc(sigPts[0].x,sigPts[0].y,1.4,0,7); sctx.fillStyle='#1d2a6b'; sctx.fill();});
+sig.addEventListener('pointermove',e=>{ if(!sigPts) return; e.preventDefault();
+  const p=sp(e), a=sigPts[sigPts.length-1]; sigLen+=Math.hypot(p.x-a.x,p.y-a.y); sigPts.push(p);
+  if(sigPts.length>2){const b=sigPts[sigPts.length-3], m1={x:(b.x+a.x)/2,y:(b.y+a.y)/2}, m2={x:(a.x+p.x)/2,y:(a.y+p.y)/2};
+    sctx.beginPath(); sctx.moveTo(m1.x,m1.y); sctx.quadraticCurveTo(a.x,a.y,m2.x,m2.y); sctx.stroke();}
+  else{sctx.beginPath();sctx.moveTo(a.x,a.y);sctx.lineTo(p.x,p.y);sctx.stroke()}
+  if(sigLen>90) $('#go1').disabled=false;
+});
+const sigEnd=()=>{sigPts=null};
+sig.addEventListener('pointerup',sigEnd); sig.addEventListener('pointercancel',sigEnd); sig.addEventListener('pointerleave',sigEnd);
+sig.addEventListener('touchmove',e=>e.preventDefault(),{passive:false});
+$('#sigClear').onclick=()=>{sctx.clearRect(0,0,sig.width,sig.height); sigLen=0; $('#go1').disabled=true; $('#sigHint').style.opacity=1};
+$('#go1').onclick=()=>{
+  try{sigURL=sig.toDataURL('image/png')}catch(_){}
+  if(sigURL){$('#sigImg').src=sigURL; $('#sigRow').classList.remove('hide')}
+  $('#sigStamp').classList.add('on'); sfx.tada(); confetti(80);
+  $('#go1').disabled=true; $('#sigClear').disabled=true;
+  setTimeout(()=>show(1),1100);
+};
 
 /* ---------- 1. cake ---------- */
 const cWrap=$('#candles'); const candles=[]; let lit=22;
