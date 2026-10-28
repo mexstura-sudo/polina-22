@@ -1,0 +1,594 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#1b1033">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Полине 22!</title>
+<meta name="description" content="Секретная посылка для Полины. Открывать только имениннице.">
+<meta property="og:title" content="📦 Полине 22! Срочная доставка">
+<meta property="og:description" content="Секретная посылка. Открывать только имениннице. Хахаряшки внутри.">
+<meta property="og:image" content="https://mexstura-sudo.github.io/polina-22/media/og.jpg">
+<meta property="og:type" content="website">
+<link rel="apple-touch-icon" href="media/face.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;900&family=Unbounded:wght@600;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1b1033; --ink2:#2a1a4d; --ink3:#3a2766;
+  --pink:#ff5fa2; --yellow:#ffd23f; --mint:#3ee6b0; --sky:#6ec8ff; --orange:#ff8a3d;
+  --text:#fff6fb; --muted:#c9b8e8;
+  --safe-t:env(safe-area-inset-top,0px); --safe-b:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;background:var(--ink);overscroll-behavior:none}
+body{
+  font-family:Rubik,system-ui,-apple-system,sans-serif;color:var(--text);
+  -webkit-user-select:none;user-select:none;touch-action:manipulation;overflow:hidden;
+  background:
+    radial-gradient(1200px 600px at 10% -10%, #4b2a85 0%, transparent 60%),
+    radial-gradient(900px 500px at 110% 110%, #5a1f5f 0%, transparent 60%),
+    var(--ink);
+}
+h1,h2,.display{font-family:Unbounded,Rubik,sans-serif;letter-spacing:-.01em}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+
+/* ---------- scenes ---------- */
+.scene{
+  position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;
+  padding:calc(var(--safe-t) + 18px) 16px calc(var(--safe-b) + 18px);
+  height:100vh;height:100dvh;overflow-y:auto;-webkit-overflow-scrolling:touch;
+  opacity:0;visibility:hidden;transform:translateY(24px) scale(.98);
+  transition:opacity .5s ease, transform .5s ease, visibility 0s .5s;
+}
+.scene.on{opacity:1;visibility:visible;transform:none;transition:opacity .5s ease, transform .5s ease}
+.wrap{width:100%;max-width:440px;margin:auto 0;display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center}
+.kicker{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--yellow);font-weight:700}
+h1{font-size:clamp(30px,9vw,44px);line-height:1.05;font-weight:900}
+h2{font-size:clamp(22px,6.6vw,30px);line-height:1.1;font-weight:800}
+p.lead{color:var(--muted);font-size:16px;line-height:1.45}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  min-height:54px;padding:0 26px;border-radius:999px;font-weight:700;font-size:17px;
+  background:var(--pink);color:#fff;box-shadow:0 6px 0 #b8306e, 0 12px 30px rgba(255,95,162,.35);
+  transition:transform .12s ease, box-shadow .12s ease;
+}
+.btn:active{transform:translateY(4px);box-shadow:0 2px 0 #b8306e, 0 6px 16px rgba(255,95,162,.3)}
+.btn.y{background:var(--yellow);color:var(--ink);box-shadow:0 6px 0 #c49a10, 0 12px 30px rgba(255,210,63,.3)}
+.btn.y:active{box-shadow:0 2px 0 #c49a10}
+.btn.ghost{background:transparent;box-shadow:none;color:var(--muted);min-height:40px;font-weight:500;font-size:15px;text-decoration:underline;text-underline-offset:4px}
+.hide{display:none!important}
+
+/* progress dots */
+#dots{position:fixed;left:0;right:0;top:calc(var(--safe-t) + 8px);display:flex;justify-content:center;gap:6px;z-index:40;pointer-events:none;transition:opacity .4s}
+#dots i{width:7px;height:7px;border-radius:9px;background:rgba(255,255,255,.22);transition:all .3s}
+#dots i.on{width:22px;background:var(--yellow)}
+
+/* ---------- scene 0: gift ---------- */
+.gift{position:relative;width:220px;height:220px;margin:18px 0 6px;cursor:pointer}
+.gift .box{position:absolute;left:20px;right:20px;bottom:0;height:140px;background:var(--pink);border-radius:10px;box-shadow:inset 0 -14px 0 rgba(0,0,0,.12)}
+.gift .lid{position:absolute;left:8px;right:8px;top:46px;height:42px;background:#ff7ab4;border-radius:10px;box-shadow:inset 0 -8px 0 rgba(0,0,0,.1);transform-origin:20% 100%;transition:transform .7s cubic-bezier(.3,1.6,.5,1)}
+.gift .rib-v{position:absolute;left:50%;width:30px;margin-left:-15px;top:46px;bottom:0;background:var(--yellow)}
+.gift .bow{position:absolute;left:50%;top:6px;width:110px;margin-left:-55px;height:48px;transition:transform .7s cubic-bezier(.3,1.6,.5,1)}
+.gift .bow:before,.gift .bow:after{content:"";position:absolute;top:6px;width:52px;height:40px;border:12px solid var(--yellow);border-radius:50% 50% 50% 50%/60% 60% 40% 40%}
+.gift .bow:before{left:0;transform:rotate(-18deg)}
+.gift .bow:after{right:0;transform:rotate(18deg)}
+.gift .tag{position:absolute;right:-6px;bottom:30px;background:#fff;color:var(--ink);font-size:12px;font-weight:700;padding:6px 10px;border-radius:6px;transform:rotate(8deg);box-shadow:0 4px 12px rgba(0,0,0,.3)}
+.gift.shake{animation:shake .35s}
+@keyframes shake{0%,100%{transform:rotate(0)}20%{transform:rotate(-7deg) scale(1.03)}50%{transform:rotate(6deg)}80%{transform:rotate(-3deg)}}
+.gift.open .lid{transform:translate(-90px,-60px) rotate(-50deg);opacity:0;transition:transform .7s ease,opacity .6s ease .2s}
+.gift.open .bow{transform:translate(-90px,-80px) rotate(-50deg);opacity:0;transition:transform .7s ease,opacity .6s ease .2s}
+.gift .cat{position:absolute;left:50%;bottom:60px;font-size:90px;margin-left:-50px;transform:translateY(70px) scale(.3);opacity:0;transition:all .6s cubic-bezier(.3,1.7,.5,1) .25s;z-index:-1}
+.gift.open .cat{transform:translateY(-40px) scale(1);opacity:1}
+.bubble{position:relative;background:#fff;color:var(--ink);font-weight:700;padding:12px 16px;border-radius:18px;font-size:16px;line-height:1.3;max-width:300px}
+.bubble:after{content:"";position:absolute;left:50%;top:-10px;margin-left:-10px;border:10px solid transparent;border-top:0;border-bottom-color:#fff}
+.taps{display:flex;gap:8px}
+.taps i{width:12px;height:12px;border-radius:50%;border:2px solid var(--yellow);transition:background .2s}
+.taps i.on{background:var(--yellow)}
+.stamp{display:inline-block;border:3px solid var(--pink);color:var(--pink);font-family:Unbounded;font-weight:800;font-size:13px;padding:6px 12px;border-radius:8px;transform:rotate(-4deg);letter-spacing:.06em}
+
+/* ---------- scene 1: cake ---------- */
+.cake{position:relative;width:310px;height:250px;margin-top:62px}
+.tier{position:absolute;left:50%;border-radius:14px 14px 10px 10px}
+.t1{width:300px;height:96px;margin-left:-150px;bottom:14px;background:linear-gradient(#ff8fc0,#ff5fa2);box-shadow:inset 0 -10px 0 rgba(0,0,0,.12)}
+.t2{width:240px;height:84px;margin-left:-120px;bottom:104px;background:linear-gradient(#ffe27a,#ffc93a);box-shadow:inset 0 -10px 0 rgba(0,0,0,.1)}
+.t2:before,.t1:before{content:"";position:absolute;left:0;right:0;top:0;height:22px;border-radius:14px 14px 0 0;
+  background:radial-gradient(circle at 12px 18px,#fff 11px,transparent 12px) 0 0/24px 30px repeat-x, #fff;clip-path:inset(0 0 -10px 0)}
+.t1:before{background:radial-gradient(circle at 12px 18px,#fff6fb 11px,transparent 12px) 0 0/24px 30px repeat-x,#fff6fb}
+.plate{position:absolute;left:50%;bottom:0;width:340px;height:20px;margin-left:-170px;border-radius:50%;background:#d9cff0;box-shadow:0 10px 20px rgba(0,0,0,.35)}
+.sprinkle{position:absolute;width:10px;height:4px;border-radius:3px}
+.candles{position:absolute;left:50%;bottom:184px;width:226px;margin-left:-113px;height:80px}
+.candle{position:absolute;bottom:0;width:8px;height:34px;border-radius:3px;margin-left:-4px;
+  background:repeating-linear-gradient(135deg,#fff 0 5px,var(--sky) 5px 10px);touch-action:manipulation}
+.candle.r2{height:46px}
+.candle .fl{position:absolute;left:50%;bottom:100%;width:12px;height:20px;margin-left:-6px;margin-bottom:2px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;
+  background:radial-gradient(circle at 50% 70%,#fff 0 18%,#ffd23f 30%,#ff8a3d 70%,transparent 72%);
+  animation:flick .18s infinite alternate;transform-origin:50% 100%;filter:drop-shadow(0 0 6px #ffb340)}
+.candle .hit{position:absolute;left:-10px;right:-10px;top:-32px;bottom:-4px}
+.candle.out .fl{animation:none;transform:scale(0);transition:transform .25s}
+.candle .smoke{position:absolute;left:50%;bottom:100%;width:8px;height:8px;margin-left:-4px;border-radius:50%;background:rgba(220,220,240,.6);opacity:0}
+.candle.out .smoke{animation:smoke 1.2s ease-out forwards}
+@keyframes flick{from{transform:scaleY(1) rotate(-3deg)}to{transform:scaleY(1.12) rotate(3deg)}}
+@keyframes smoke{0%{opacity:.8;transform:translateY(0) scale(1)}100%{opacity:0;transform:translate(6px,-40px) scale(3)}}
+.counter{font-family:Unbounded;font-weight:800;font-size:15px;color:var(--yellow)}
+.micbar{width:220px;height:10px;border-radius:9px;background:rgba(255,255,255,.12);overflow:hidden}
+.micbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--mint),var(--yellow),var(--pink));transition:width .06s}
+.row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+
+/* ---------- scene 2: game ---------- */
+#s2 .wrap{gap:10px;margin:0;height:100%;max-width:520px}
+.hud{width:100%;display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:16px;padding-top:18px}
+.hud .score{font-family:Unbounded;font-size:22px;color:var(--yellow)}
+.arena{position:relative;width:100%;flex:1;min-height:340px;border-radius:24px;overflow:hidden;touch-action:none;
+  background:linear-gradient(180deg,#2c1a54 0%,#3b2470 60%,#4b2c7d 100%);box-shadow:inset 0 0 0 2px rgba(255,255,255,.08)}
+.arena .grid{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.12) 1px,transparent 1px);background-size:22px 22px}
+.item{position:absolute;left:0;top:0;font-size:38px;line-height:1;will-change:transform;pointer-events:none;text-align:center}
+.item small{display:block;font-size:10px;font-weight:700;color:#fff;background:rgba(0,0,0,.45);border-radius:6px;padding:1px 4px;margin-top:-2px;font-family:Rubik}
+.catcher{position:absolute;left:0;bottom:12px;width:84px;height:84px;margin-left:-42px;border-radius:50%;
+  background:center/cover no-repeat;border:4px solid var(--yellow);box-shadow:0 6px 18px rgba(0,0,0,.4);will-change:transform;pointer-events:none}
+.catcher.eat{background-image:var(--face2)!important;transform-origin:50% 100%}
+.catcher.ouch{border-color:#ff4d4d;filter:saturate(.4)}
+.pop{position:absolute;pointer-events:none;font-weight:900;font-size:18px;white-space:nowrap;text-shadow:0 2px 0 rgba(0,0,0,.5);animation:pop 1.1s ease-out forwards;transform:translateX(-50%)}
+@keyframes pop{0%{opacity:0;transform:translate(-50%,10px) scale(.6)}15%{opacity:1;transform:translate(-50%,0) scale(1.15)}100%{opacity:0;transform:translate(-50%,-60px) scale(1)}}
+.overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:20px;text-align:center;background:rgba(27,16,51,.82);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+.legend{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;font-size:14px;text-align:left;color:var(--muted)}
+.legend b{color:var(--text)}
+.timebar{width:100%;height:6px;border-radius:6px;background:rgba(255,255,255,.12);overflow:hidden}
+.timebar i{display:block;height:100%;width:100%;background:var(--mint);transform-origin:0 50%}
+
+/* ---------- scene 3: dossier ---------- */
+.file{width:100%;background:#f7eedb;color:#2b2040;border-radius:6px 18px 18px 18px;padding:22px 18px 20px;text-align:left;position:relative;
+  box-shadow:0 18px 40px rgba(0,0,0,.4);font-size:15px;line-height:1.45}
+.file:before{content:"ЛИЧНОЕ ДЕЛО № 22";position:absolute;left:0;top:-26px;background:#f7eedb;font-family:Unbounded;font-size:11px;font-weight:800;padding:8px 14px 6px;border-radius:10px 10px 0 0;letter-spacing:.08em}
+.file .head{display:flex;gap:14px;align-items:center;margin-bottom:14px}
+.file .ph{width:84px;height:84px;flex:none;border-radius:10px;background:center/cover;border:3px solid #fff;box-shadow:0 4px 10px rgba(0,0,0,.2);transform:rotate(-3deg)}
+.file h3{font-family:Unbounded;font-size:20px;font-weight:800;line-height:1.1}
+.file .sub{font-size:13px;color:#6b5d82}
+.file dl{display:grid;grid-template-columns:auto 1fr;gap:6px 10px;margin:10px 0 14px;font-size:14px}
+.file dt{color:#6b5d82}
+.file dd{font-weight:500}
+.stat{margin:9px 0}
+.stat .l{display:flex;justify-content:space-between;font-size:13px;font-weight:700}
+.stat .l span:last-child{font-family:Unbounded;font-size:12px}
+.stat .b{height:10px;border-radius:9px;background:#e4d7bd;overflow:hidden;margin-top:4px}
+.stat .b i{display:block;height:100%;width:0;border-radius:9px;transition:width 1.4s cubic-bezier(.2,.8,.2,1)}
+.stat em{display:block;font-size:12px;color:#7a6c90;font-style:normal;margin-top:2px}
+.diag{margin-top:14px;padding:12px;border:2px dashed #c9475f;border-radius:10px;color:#a3283f;font-weight:700;transform:rotate(-1deg)}
+.diag small{display:block;font-weight:500;color:#7a3a48;margin-top:4px}
+
+/* ---------- scene 4: video ---------- */
+.film{width:100%;max-width:340px;border-radius:22px;overflow:hidden;background:#000;box-shadow:0 0 0 6px var(--ink3), 0 20px 50px rgba(0,0,0,.5);position:relative}
+.film video{display:block;width:100%;aspect-ratio:9/16;max-height:62dvh;object-fit:cover;background:#000}
+.reviews{display:flex;flex-direction:column;gap:8px;width:100%;font-size:14px;text-align:left}
+.rev{background:var(--ink2);border-radius:14px;padding:10px 12px;color:var(--muted)}
+.rev b{color:var(--yellow)}
+.stars{color:var(--yellow);letter-spacing:2px}
+
+/* ---------- scene 5: wishes ---------- */
+.quest{width:100%;background:var(--ink2);border-radius:18px;padding:14px 16px;text-align:left;box-shadow:inset 0 0 0 2px rgba(255,255,255,.06)}
+.quest .t{display:flex;justify-content:space-between;align-items:center;font-weight:700;gap:8px}
+.quest .t span:first-child{font-size:16px}
+.quest .pct{font-family:Unbounded;font-size:13px;color:var(--mint);white-space:nowrap}
+.quest .bar{height:12px;border-radius:9px;background:rgba(255,255,255,.1);margin:8px 0 6px;overflow:hidden}
+.quest .bar i{display:block;height:100%;width:0;border-radius:9px;background:linear-gradient(90deg,var(--mint),var(--yellow))}
+.quest .note{font-size:13px;color:var(--muted);min-height:18px}
+.letter{width:100%;background:#fff6fb;color:#2b2040;border-radius:20px;padding:22px 20px;text-align:left;font-size:16px;line-height:1.55;box-shadow:0 18px 40px rgba(0,0,0,.35)}
+.letter p+p{margin-top:10px}
+.letter .sign{margin-top:14px;font-weight:700;text-align:right}
+.big22{font-family:Unbounded;font-weight:900;font-size:120px;line-height:.9;background:linear-gradient(135deg,var(--yellow),var(--pink),var(--sky));-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 6px 0 rgba(0,0,0,.25))}
+
+#fx{position:fixed;inset:0;pointer-events:none;z-index:50;width:100%;height:100%}
+.rain{position:fixed;top:-40px;z-index:45;pointer-events:none;font-weight:900;font-family:Unbounded;white-space:nowrap;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(calc(100dvh + 80px)) rotate(var(--r))}}
+.toast{position:fixed;left:50%;bottom:calc(var(--safe-b) + 24px);transform:translateX(-50%);background:#fff;color:var(--ink);font-weight:700;padding:10px 16px;border-radius:14px;z-index:60;box-shadow:0 10px 30px rgba(0,0,0,.4);font-size:15px;max-width:calc(100% - 32px);text-align:center;animation:toast 2.6s ease forwards}
+@keyframes toast{0%{opacity:0;transform:translate(-50%,20px)}10%,85%{opacity:1;transform:translate(-50%,0)}100%{opacity:0;transform:translate(-50%,10px)}}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<canvas id="fx"></canvas>
+<div id="dots"></div>
+
+<!-- 0. ПОСЫЛКА -->
+<section class="scene on" id="s0">
+  <div class="wrap">
+    <span class="stamp">СРОЧНАЯ ДОСТАВКА</span>
+    <h1>Полина,<br>тебе посылка 📦</h1>
+    <p class="lead">Отправитель: Вселенная. Содержимое: хахаряшки, котик и немного хаоса.<br>Тапни по коробке <b style="color:var(--yellow)">5 раз</b>, она тугая.</p>
+    <div class="gift" id="gift" role="button" aria-label="Открыть подарок">
+      <div class="cat">🐱</div>
+      <div class="box"></div><div class="rib-v"></div>
+      <div class="lid"></div><div class="bow"></div>
+      <div class="tag">для П. ❤</div>
+    </div>
+    <div class="taps" id="taps"><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="bubble hide" id="catSay">Мяу! Тебе 22! Я котик-курьер, распишись тут: ✍️</div>
+    <button class="btn y hide" id="go1">Расписаться и идти дальше →</button>
+  </div>
+</section>
+
+<!-- 1. ТОРТ -->
+<section class="scene" id="s1">
+  <div class="wrap">
+    <div class="kicker">Этап 1 · ритуал</div>
+    <h2>22 свечи.<br>Пожарные уже в курсе 🚒</h2>
+    <p class="lead" id="cakeHint">Задуй их: подуй в микрофон айфона или туши пальцем по одной. Загадать желание не забудь.</p>
+    <div class="cake" id="cake">
+      <div class="plate"></div>
+      <div class="tier t1"></div>
+      <div class="tier t2"></div>
+      <div class="candles" id="candles"></div>
+    </div>
+    <div class="counter" id="cCount">Горит: 22</div>
+    <div class="micbar hide" id="micbar"><i></i></div>
+    <div class="row">
+      <button class="btn" id="micBtn">🎤 Подуть в микрофон</button>
+    </div>
+    <button class="btn y hide" id="go2">Желание загадано →</button>
+  </div>
+</section>
+
+<!-- 2. ИГРА -->
+<section class="scene" id="s2">
+  <div class="wrap">
+    <div class="hud"><span id="lives">❤️❤️❤️</span><span class="score" id="score">0</span><span id="timer">30с</span></div>
+    <div class="timebar"><i id="tbar"></i></div>
+    <div class="arena" id="arena">
+      <div class="grid"></div>
+      <div class="catcher" id="catcher"></div>
+      <div class="overlay" id="gStart">
+        <div class="kicker">Этап 2 · мини-игра</div>
+        <h2>Накорми Полину</h2>
+        <p class="lead">Води пальцем, лови вкусное. От учёбы уворачивайся: сегодня выходной.</p>
+        <div class="legend">
+          <div>🍜🍣🍕🥟 <b>+1</b></div><div>🐱 котик <b>+3</b></div>
+          <div>🎂 тортик <b>+5</b></div><div>📚📝⏰ <b>−❤️</b></div>
+        </div>
+        <button class="btn" id="gPlay">Играть!</button>
+        <button class="btn ghost" id="gSkip">я на диете (пропустить)</button>
+      </div>
+      <div class="overlay hide" id="gEnd">
+        <div class="kicker">Результат</div>
+        <div class="big22" id="gScore" style="font-size:84px">0</div>
+        <h2 id="gRank">—</h2>
+        <p class="lead" id="gRankTxt"></p>
+        <div class="row">
+          <button class="btn y" id="go3">Дальше →</button>
+          <button class="btn ghost" id="gAgain">ещё раз</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. ДОСЬЕ -->
+<section class="scene" id="s3">
+  <div class="wrap">
+    <div class="kicker">Этап 3 · рассекречено</div>
+    <h2>Мы собрали на тебя досье 🕵️</h2>
+    <div class="file" style="margin-top:22px">
+      <div class="head">
+        <div class="ph" style="background-image:url(media/face.jpg)"></div>
+        <div>
+          <h3>Полина</h3>
+          <div class="sub">Уровень 22 (только что апнулась ⬆️)</div>
+        </div>
+      </div>
+      <dl>
+        <dt>Класс</dt><dd>Психолог-робототехник (мультикласс)</dd>
+        <dt>Гильдия</dt><dd>Лига Роботов</dd>
+        <dt>Фамильяр</dt><dd>Любой котик в радиусе 50 м 🐈</dd>
+        <dt>Путь ниндзя</dt><dd>Доучиться и не сдаться, даттебаё</dd>
+        <dt>Досуг</dt><dd>Тейват, Берсерк, бокс-аниме, Рик и Морти, Южный Парк</dd>
+      </dl>
+      <div id="stats"></div>
+      <div class="diag">Диагноз: хронические хахаряшки.<br>
+        <small>Лечению не подлежит. И не надо. Побочный эффект: при встрече с очень вкусной едой издаёт непечатные звуки (#@%&!). Наука бессильна.</small>
+      </div>
+    </div>
+    <button class="btn y" id="go4">Дальше: кино 🎬</button>
+  </div>
+</section>
+
+<!-- 4. ВИДЕО -->
+<section class="scene" id="s4">
+  <div class="wrap">
+    <div class="kicker">Этап 4 · премьера</div>
+    <h2>Документальный фильм<br>«Полина в естественной среде обитания»</h2>
+    <div class="film">
+      <video id="vid" src="media/polina.mp4" poster="media/poster.jpg" playsinline webkit-playsinline controls preload="metadata"></video>
+    </div>
+    <div class="reviews">
+      <div class="rev"><span class="stars">★★★★★</span><br><b>Кинопоиск:</b> «10 из 10. Оскар уже едет, курьер — тот самый котик».</div>
+      <div class="rev"><span class="stars">★★★★★</span><br><b>Сосед снизу:</b> «Слышал всё. Пересматриваю каждый вечер».</div>
+    </div>
+    <button class="btn y" id="go5">Финал →</button>
+  </div>
+</section>
+
+<!-- 5. ПОЖЕЛАНИЯ -->
+<section class="scene" id="s5">
+  <div class="wrap">
+    <div class="big22">22</div>
+    <h2>Квесты на новый уровень</h2>
+    <div class="quest"><div class="t"><span>🎓 Закончить учёбу</span><span class="pct" id="q1p">0%</span></div><div class="bar"><i id="q1"></i></div><div class="note" id="q1n"></div></div>
+    <div class="quest"><div class="t"><span>💰 Разбогатеть</span><span class="pct" id="q2p">0%</span></div><div class="bar"><i id="q2"></i></div><div class="note" id="q2n"></div></div>
+    <div class="quest"><div class="t"><span>✨ Быть счастливой</span><span class="pct" id="q3p">0%</span></div><div class="bar"><i id="q3"></i></div><div class="note" id="q3n"></div></div>
+    <div class="letter">
+      <p>Полина, с днём рождения! 🎉</p>
+      <p>Желаю поскорее закончить учёбу и забыть слово «сессия», как страшный сон. Разбогатеть так, чтобы хватало на всю вкусную еду мира (и чтобы на каждое блюдо хватало твоего словарного запаса). И главное — быть счастливой. По-настоящему, каждый день, а не только когда принесли еду.</p>
+      <p>Ты умеешь понимать людей, находишь общий язык с детьми и с котами и смешишь всех вокруг. В любой из бесконечных вселенных, даже в самой странной, ты классная. Это научно доказано.</p>
+      <p>Оставайся собой, хахаряшка. 22 тебе к лицу!</p>
+      <div class="sign">Обнимаю, Андрей 🤖</div>
+    </div>
+    <div class="row">
+      <button class="btn" id="moreHa">Ещё хахаряшек! 🎉</button>
+      <button class="btn ghost" id="again">сначала</button>
+    </div>
+  </div>
+</section>
+
+<script>
+(()=>{
+const $=s=>document.querySelector(s);
+const scenes=[...document.querySelectorAll('.scene')];
+const dots=$('#dots');
+scenes.forEach(()=>dots.appendChild(document.createElement('i')));
+let cur=0;
+function show(i){
+  scenes[cur].classList.remove('on');
+  cur=i; scenes[cur].classList.add('on'); scenes[cur].scrollTop=0;
+  [...dots.children].forEach((d,k)=>d.classList.toggle('on',k===i));
+  dots.style.opacity = i===2 ? 0 : 1;
+  if(i!==4){ try{$('#vid').pause()}catch(e){} }
+  onEnter[i]&&onEnter[i]();
+}
+[...dots.children][0].classList.add('on');
+const onEnter={};
+
+/* ---------- sound (Web Audio, unlocked on first tap for iOS) ---------- */
+let ac=null;
+function audio(){
+  if(!ac){ try{ ac=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} }
+  if(ac&&ac.state==='suspended') ac.resume();
+  return ac;
+}
+document.addEventListener('touchstart',audio,{once:true,passive:true});
+document.addEventListener('pointerdown',audio,{once:true});
+function tone(f,d=.12,type='sine',v=.18,when=0,slide=0){
+  const a=audio(); if(!a) return;
+  const t=a.currentTime+when, o=a.createOscillator(), g=a.createGain();
+  o.type=type; o.frequency.setValueAtTime(f,t); if(slide) o.frequency.exponentialRampToValueAtTime(slide,t+d);
+  g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(v,t+.01); g.gain.exponentialRampToValueAtTime(0.0001,t+d);
+  o.connect(g).connect(a.destination); o.start(t); o.stop(t+d+.02);
+}
+const sfx={
+  pop:()=>{tone(520,.08,'triangle',.2,0,900)},
+  yum:()=>{tone(660,.07,'square',.08);tone(990,.09,'square',.08,.07)},
+  bleep:()=>{tone(1000,.32,'sine',.16)},
+  bad:()=>{tone(220,.25,'sawtooth',.12,0,110)},
+  meow:()=>{tone(700,.35,'triangle',.18,0,1100);tone(1100,.25,'triangle',.12,.2,600)},
+  puff:()=>{tone(300,.12,'triangle',.08,0,120)},
+  tada:()=>{[523,659,784,1047].forEach((f,i)=>tone(f,.22,'triangle',.16,i*.09))}
+};
+function hbd(){ // Happy Birthday (public domain)
+  const N={G4:392,A4:440,B4:494,C5:523,D5:587,E5:659,F5:698,G5:784};
+  const m=[['G4',.75],['G4',.25],['A4',1],['G4',1],['C5',1],['B4',2],
+           ['G4',.75],['G4',.25],['A4',1],['G4',1],['D5',1],['C5',2],
+           ['G4',.75],['G4',.25],['G5',1],['E5',1],['C5',1],['B4',1],['A4',2],
+           ['F5',.75],['F5',.25],['E5',1],['C5',1],['D5',1],['C5',2.5]];
+  let t=0; const b=.32;
+  m.forEach(([n,d])=>{tone(N[n],d*b*.95,'triangle',.14,t);tone(N[n]/2,d*b*.9,'sine',.06,t);t+=d*b});
+}
+
+/* ---------- confetti ---------- */
+const cv=$('#fx'), cx=cv.getContext('2d'); let parts=[], raf=0;
+function fit(){const r=devicePixelRatio||1;cv.width=innerWidth*r;cv.height=innerHeight*r;cx.setTransform(r,0,0,r,0,0)}
+fit(); addEventListener('resize',fit);
+const COLS=['#ff5fa2','#ffd23f','#3ee6b0','#6ec8ff','#ff8a3d','#fff'];
+function confetti(n=140,x=innerWidth/2,y=innerHeight*.45){
+  for(let i=0;i<n;i++){const a=Math.random()*Math.PI*2,s=4+Math.random()*9;
+    parts.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s-6,r:4+Math.random()*5,c:COLS[i%COLS.length],rot:Math.random()*6,vr:(Math.random()-.5)*.4,life:0,shape:Math.random()<.5});}
+  if(!raf) loop();
+}
+function loop(){
+  cx.clearRect(0,0,innerWidth,innerHeight);
+  parts=parts.filter(p=>p.life<220&&p.y<innerHeight+30);
+  for(const p of parts){p.life++;p.vy+=.25;p.vx*=.99;p.x+=p.vx;p.y+=p.vy;p.rot+=p.vr;
+    cx.save();cx.translate(p.x,p.y);cx.rotate(p.rot);cx.fillStyle=p.c;
+    if(p.shape)cx.fillRect(-p.r,-p.r/2,p.r*2,p.r);else{cx.beginPath();cx.arc(0,0,p.r*.7,0,7);cx.fill()}
+    cx.restore();}
+  raf=parts.length?requestAnimationFrame(loop):0;
+  if(!raf)cx.clearRect(0,0,innerWidth,innerHeight);
+}
+function rainWords(words,n=26){
+  for(let i=0;i<n;i++){const s=document.createElement('div');s.className='rain';
+    s.textContent=words[i%words.length];
+    s.style.left=(Math.random()*90)+'vw';
+    s.style.fontSize=(14+Math.random()*18)+'px';
+    s.style.color=COLS[i%COLS.length];
+    s.style.setProperty('--r',((Math.random()-.5)*120)+'deg');
+    s.style.animationDuration=(2.4+Math.random()*2.2)+'s';
+    s.style.animationDelay=(Math.random()*1.2)+'s';
+    document.body.appendChild(s); setTimeout(()=>s.remove(),6000);}
+}
+function toast(t){const d=document.createElement('div');d.className='toast';d.textContent=t;document.body.appendChild(d);setTimeout(()=>d.remove(),2700)}
+
+/* ---------- 0. gift ---------- */
+let taps=0; const gift=$('#gift');
+const tapLines=['Хм, тугая…','Ещё!','Там что-то мяукнуло 👀','Почти!'];
+gift.addEventListener('click',()=>{
+  if(taps>=5) return; taps++;
+  [...$('#taps').children].forEach((d,k)=>d.classList.toggle('on',k<taps));
+  gift.classList.remove('shake'); void gift.offsetWidth; gift.classList.add('shake');
+  sfx.pop();
+  if(taps<5){ toast(tapLines[taps-1]); return; }
+  setTimeout(()=>{
+    gift.classList.add('open'); sfx.meow(); confetti(160);
+    $('#catSay').classList.remove('hide'); $('#go1').classList.remove('hide'); $('#taps').classList.add('hide');
+  },250);
+});
+$('#go1').onclick=()=>show(1);
+
+/* ---------- 1. cake ---------- */
+const cWrap=$('#candles'); const candles=[]; let lit=22;
+for(let i=0;i<22;i++){
+  const row=i<11?0:1, k=i%11;
+  const c=document.createElement('div'); c.className='candle'+(row?' r2':'');
+  c.style.left=(row? 12+k*20.2 : 4+k*21.8)+'px';
+  c.style.bottom=(row?-6:6)+'px';
+  c.style.zIndex=row?2:1;
+  if(row) c.style.background='repeating-linear-gradient(135deg,#fff 0 5px,#ff5fa2 5px 10px)';
+  c.innerHTML='<div class="fl"></div><div class="smoke"></div><div class="hit"></div>';
+  c.addEventListener('pointerdown',e=>{e.preventDefault();blow(c)});
+  cWrap.appendChild(c); candles.push(c);
+}
+// sprinkles
+const t1=document.querySelector('.t1'),t2=document.querySelector('.t2');
+[[t1,14],[t2,10]].forEach(([el,n])=>{for(let i=0;i<n;i++){const s=document.createElement('i');s.className='sprinkle';
+  s.style.left=(8+Math.random()*84)+'%';s.style.top=(38+Math.random()*48)+'%';s.style.background=COLS[i%5];s.style.transform=`rotate(${Math.random()*180}deg)`;el.appendChild(s)}});
+const outLines=['Пф-ф!','Минус одна!','Ещё горят, не расслабляйся','Пожарные выдохнули','Ты легенда'];
+function blow(c){
+  if(c.classList.contains('out')) return;
+  c.classList.add('out'); lit--; sfx.puff();
+  $('#cCount').textContent= lit? `Горит: ${lit}` : 'Все задуты! 🎉';
+  if(lit===0) allOut();
+}
+function allOut(){
+  stopMic(); $('#micBtn').classList.add('hide'); $('#micbar').classList.add('hide');
+  $('#cakeHint').innerHTML='Желание принято в обработку.<br>Срок исполнения: <b style="color:var(--yellow)">этот год</b>.';
+  confetti(200); setTimeout(()=>confetti(120,innerWidth*.2,innerHeight*.3),400); setTimeout(()=>confetti(120,innerWidth*.8,innerHeight*.3),700);
+  hbd(); $('#go2').classList.remove('hide');
+}
+let stream=null, micRaf=0;
+$('#micBtn').onclick=async()=>{
+  const a=audio();
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia||!a){toast('Микрофон недоступен. Туши пальцем 👆');return}
+  try{
+    stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}});
+  }catch(e){toast('Без микрофона тоже можно: туши пальцем 👆');return}
+  const src=a.createMediaStreamSource(stream), an=a.createAnalyser(); an.fftSize=512; src.connect(an);
+  const buf=new Uint8Array(an.fftSize); $('#micbar').classList.remove('hide');
+  $('#micBtn').textContent='Дуй сильнее! 💨'; let acc=0;
+  const tick=()=>{
+    an.getByteTimeDomainData(buf); let s=0; for(const v of buf){const x=(v-128)/128;s+=x*x}
+    const rms=Math.sqrt(s/buf.length); $('#micbar i').style.width=Math.min(100,rms*420)+'%';
+    if(rms>.11){acc+=rms; if(acc>.35){acc=0; const on=candles.filter(c=>!c.classList.contains('out')); if(on.length) blow(on[Math.floor(Math.random()*on.length)]); }}
+    micRaf=requestAnimationFrame(tick);
+  }; tick();
+};
+function stopMic(){cancelAnimationFrame(micRaf); if(stream){stream.getTracks().forEach(t=>t.stop()); stream=null}}
+$('#go2').onclick=()=>show(2);
+
+/* ---------- 2. game ---------- */
+const arena=$('#arena'), catcher=$('#catcher');
+catcher.style.backgroundImage='url(media/face.jpg)';
+catcher.style.setProperty('--face2','url(media/face2.jpg)');
+const GOOD=['🍜','🍣','🍕','🥟','🍩','🍔','🌮','🍫','🍙','🧋','🍟'];
+const BAD=[['📚','сессия'],['📝','курсовая'],['⏰','дедлайн'],['🧾','реферат']];
+const YUM=['О, #@%&! Как вкусно!','хахаряшки!','@#$!! ВКУСНО','божественно, @#%','ммм… *бип*','*непечатное* 😋','это лучше аниме','шеф, %#@!'];
+const RANKS=[[0,'Стажёр-дегустатор','Котики верят в тебя. Немножко.'],[10,'Психолог-гурман','Эмпатия к еде на высоте.'],[22,'Шеф-хахаряшка','22 — круто, как возраст!'],[35,'Сенсей вкусняшек','Наруто бы позавидовал аппетиту, даттебаё.'],[50,'Легенда Тейвата','Пять звёзд, без гаранта. Рандом тебя любит.']];
+let G=null;
+function W(){return arena.clientWidth} function H(){return arena.clientHeight}
+function setCatcher(x){G&&(G.cx=Math.max(42,Math.min(W()-42,x))); catcher.style.transform=`translateX(${G?G.cx:W()/2}px)`}
+function pointer(e){const r=arena.getBoundingClientRect(); const p=e.touches?e.touches[0]:e; if(G&&G.run) setCatcher(p.clientX-r.left)}
+arena.addEventListener('pointermove',pointer); arena.addEventListener('pointerdown',pointer);
+arena.addEventListener('touchmove',e=>{if(G&&G.run){e.preventDefault();pointer(e)}},{passive:false});
+arena.addEventListener('touchstart',e=>{if(G&&G.run){e.preventDefault();pointer(e)}},{passive:false});
+function popText(t,x,y,c){const d=document.createElement('div');d.className='pop';d.textContent=t;d.style.left=x+'px';d.style.top=y+'px';d.style.color=c;arena.appendChild(d);setTimeout(()=>d.remove(),1100)}
+function startGame(){
+  arena.querySelectorAll('.item,.pop').forEach(n=>n.remove());
+  $('#gStart').classList.add('hide'); $('#gEnd').classList.add('hide');
+  G={run:true,score:0,lives:3,t0:performance.now(),last:performance.now(),spawn:0,items:[],cx:W()/2,dur:30000};
+  setCatcher(W()/2); hud(); requestAnimationFrame(step);
+}
+function hud(){$('#score').textContent=G.score;$('#lives').textContent='❤️'.repeat(G.lives)+'🖤'.repeat(3-G.lives)}
+function spawn(el){
+  const r=Math.random(); let kind,emo,label='';
+  if(r<.06){kind='cake';emo='🎂'} else if(r<.16){kind='cat';emo='🐱'} else if(r<.42){kind='bad';const b=BAD[Math.floor(Math.random()*BAD.length)];emo=b[0];label=b[1]} else {kind='good';emo=GOOD[Math.floor(Math.random()*GOOD.length)]}
+  const n=document.createElement('div'); n.className='item'; n.innerHTML=emo+(label?`<small>${label}</small>`:'');
+  arena.appendChild(n);
+  const prog=el/G.dur;
+  G.items.push({n,kind,x:24+Math.random()*(W()-48),y:-50,v:(150+prog*230)*(kind==='cake'?1.25:1)*(0.85+Math.random()*.3),wob:Math.random()*6});
+}
+function step(now){
+  if(!G||!G.run) return;
+  const dt=Math.min(.05,(now-G.last)/1000); G.last=now; const el=now-G.t0;
+  const left=Math.max(0,G.dur-el); $('#timer').textContent=Math.ceil(left/1000)+'с'; $('#tbar').style.transform=`scaleX(${left/G.dur})`;
+  G.spawn-=dt*1000; if(G.spawn<=0){spawn(el); G.spawn=Math.max(320,720-el/60)}
+  const cy=H()-12-42, h=H();
+  for(const it of G.items){
+    it.y+=it.v*dt; const x=it.x+Math.sin(it.y/40+it.wob)*8;
+    it.n.style.transform=`translate(${x-20}px,${it.y}px)`;
+    const dx=x-G.cx, dy=(it.y+20)-cy;
+    if(!it.done && Math.abs(dx)<50 && Math.abs(dy)<44){ it.done=true; it.n.remove(); hit(it,x,it.y); }
+    else if(!it.done && it.y>h+10){ it.done=true; it.n.remove(); }
+  }
+  G.items=G.items.filter(i=>!i.done);
+  if(left<=0||G.lives<=0) return endGame();
+  requestAnimationFrame(step);
+}
+function hit(it,x,y){
+  if(it.kind==='bad'){G.lives--; sfx.bad(); popText(['Курсовая догнала 😩','Ой, учёба!','Не сегодня, сессия!'][Math.floor(Math.random()*3)],x,y,'#ff6b6b');
+    catcher.classList.add('ouch'); setTimeout(()=>catcher.classList.remove('ouch'),350);}
+  else{
+    const add=it.kind==='cake'?5:it.kind==='cat'?3:1; G.score+=add;
+    if(it.kind==='cat'){sfx.meow();popText('+3 мур 🐾',x,y,'#3ee6b0')}
+    else if(it.kind==='cake'){sfx.tada();popText('+5 ТОРТИК!',x,y,'#ffd23f');confetti(40,arena.getBoundingClientRect().left+x,arena.getBoundingClientRect().top+y)}
+    else{ if(Math.random()<.45){sfx.bleep();popText(YUM[Math.floor(Math.random()*YUM.length)],Math.max(80,Math.min(W()-80,x)),y,'#fff')} else {sfx.yum();popText('+1',x,y,'#ffd23f')} }
+    catcher.classList.add('eat'); clearTimeout(G.eatT); G.eatT=setTimeout(()=>catcher.classList.remove('eat'),380);
+  }
+  hud();
+}
+function endGame(){
+  G.run=false; G.items.forEach(i=>i.n.remove());
+  const s=G.score; let r=RANKS[0]; for(const x of RANKS) if(s>=x[0]) r=x;
+  $('#gScore').textContent=s; $('#gRank').textContent=r[1]; $('#gRankTxt').textContent=(G.lives<=0?'Учёба победила в этот раз. Но не в жизни! ':'')+r[2];
+  $('#gEnd').classList.remove('hide'); sfx.tada(); if(s>=10) confetti(120);
+}
+$('#gPlay').onclick=startGame; $('#gAgain').onclick=startGame;
+$('#gSkip').onclick=()=>{toast('Диета отменена: сегодня день рождения 🍰');setTimeout(()=>show(3),600)};
+$('#go3').onclick=()=>show(3);
+onEnter[2]=()=>{ if(!G||!G.run){ catcher.style.transform=`translateX(${W()/2}px)` } };
+
+/* ---------- 3. dossier ---------- */
+const STATS=[
+  ['Эмпатия',99,'#c9475f','будущий психолог, видит тебя насквозь'],
+  ['Терпение к детям в Лиге Роботов',96,'#e38b12','выдерживает даже вопрос «а робот живой?» в 10-й раз'],
+  ['Сила удара',87,'#7a4bd1','насмотрено аниме про бокс, не злите её'],
+  ['Боевой дух',94,'#2a8f6b','уровень: Гатс перед сессией'],
+  ['Кошачий магнит',100,'#e04d97','коты подходят сами, это не лечится'],
+  ['Удача в гаче',12,'#5b6fd6','примогемы, где вы… 😭'],
+];
+const st=$('#stats');
+STATS.forEach(([n,v,c,e])=>{st.insertAdjacentHTML('beforeend',`<div class="stat"><div class="l"><span>${n}</span><span>${v}</span></div><div class="b"><i style="background:${c}" data-w="${v}"></i></div><em>${e}</em></div>`)});
+onEnter[3]=()=>{ st.querySelectorAll('.b i').forEach(i=>i.style.width='0'); setTimeout(()=>st.querySelectorAll('.b i').forEach((i,k)=>setTimeout(()=>i.style.width=i.dataset.w+'%',k*160)),300) };
+$('#go4').onclick=()=>show(4);
+$('#go5').onclick=()=>show(5);
+
+/* ---------- 5. wishes ---------- */
+function anim(el,pel,from,to,ms,fmt){return new Promise(res=>{const t0=performance.now();
+  const f=now=>{const k=Math.min(1,(now-t0)/ms),e=1-Math.pow(1-k,3),v=from+(to-from)*e; el.style.width=Math.min(100,v)+'%'; pel.textContent=fmt?fmt(v):Math.round(v)+'%'; k<1?requestAnimationFrame(f):res()}; requestAnimationFrame(f)})}
+let wishRun=0;
+onEnter[5]=async()=>{
+  const id=++wishRun; const ok=()=>id===wishRun;
+  ['q1','q2','q3'].forEach(q=>{$('#'+q).style.width='0';$('#'+q+'p').textContent='0%';$('#'+q+'n').textContent=''});
+  confetti(160);
+  await anim($('#q1'),$('#q1p'),0,87,1400); if(!ok())return;
+  $('#q1n').textContent='Финишная прямая. Диплом психолога уже машет ручкой 🎓';
+  await anim($('#q2'),$('#q2p'),0,22,900); if(!ok())return;
+  $('#q2n').textContent='Загрузка богатства…'; await new Promise(r=>setTimeout(r,700)); if(!ok())return;
+  await anim($('#q2'),$('#q2p'),22,100,900); if(!ok())return;
+  $('#q2p').textContent='ОШИБКА'; $('#q2n').textContent='⚠️ Слишком много денег. Сервер не выдержал. Так держать.'; sfx.bleep();
+  await anim($('#q3'),$('#q3p'),0,100,1100); if(!ok())return;
+  $('#q3p').textContent='∞'; $('#q3n').textContent='Уже выполняется. Продлено автоматически на всю жизнь ✨'; sfx.tada();
+};
+$('#moreHa').onclick=()=>{rainWords(['хахаряшки','🐱','#@%&!','22','хахаряшки','🍜','✨','мяу']);confetti(180);sfx.tada()};
+$('#again').onclick=()=>{location.reload()};
+})();
+</script>
+</body>
+</html>
