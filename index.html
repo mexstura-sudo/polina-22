@@ -159,13 +159,70 @@ p.lead{color:var(--muted);font-size:16px;line-height:1.45}
 .diag{margin-top:14px;padding:12px;border:2px dashed #c9475f;border-radius:10px;color:#a3283f;font-weight:700;transform:rotate(-1deg)}
 .diag small{display:block;font-weight:500;color:#7a3a48;margin-top:4px}
 
-/* ---------- scene 4: video ---------- */
-.film{width:100%;max-width:340px;border-radius:22px;overflow:hidden;background:#000;box-shadow:0 0 0 6px var(--ink3), 0 20px 50px rgba(0,0,0,.5);position:relative}
-.film video{display:block;width:100%;aspect-ratio:9/16;max-height:62dvh;object-fit:cover;background:#000}
-.reviews{display:flex;flex-direction:column;gap:8px;width:100%;font-size:14px;text-align:left}
-.rev{background:var(--ink2);border-radius:14px;padding:10px 12px;color:var(--muted)}
-.rev b{color:var(--yellow)}
-.stars{color:var(--yellow);letter-spacing:2px}
+/* ---------- character model ---------- */
+.model{position:relative;width:170px;height:221px}
+.model svg{width:100%;height:100%;overflow:visible}
+.lvlup{background:linear-gradient(90deg,var(--yellow),var(--pink));color:var(--ink);font-family:Unbounded;font-weight:900;font-size:20px;padding:10px 18px;border-radius:14px;transform:rotate(-2deg);animation:lvl 1s cubic-bezier(.3,1.7,.5,1)}
+@keyframes lvl{from{transform:scale(.3) rotate(-12deg);opacity:0}}
+.charcard{width:100%;display:flex;gap:12px;align-items:center;background:var(--ink2);border-radius:20px;padding:12px;text-align:left}
+.charcard .info{flex:1;display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--muted)}
+.charcard .info b{color:var(--text)}
+.charcard .lv{font-family:Unbounded;font-weight:900;font-size:26px;color:var(--yellow);line-height:1}
+.skills{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.skill{background:var(--ink2);border-radius:14px;padding:10px;text-align:left;font-size:13px;color:var(--muted);box-shadow:inset 0 0 0 2px rgba(255,255,255,.06);line-height:1.3}
+.skill b{display:block;color:var(--text);font-size:15px;margin-bottom:2px}
+.skill.locked{opacity:.4;filter:grayscale(1)}
+.skill.new{box-shadow:inset 0 0 0 2px var(--yellow),0 0 24px rgba(255,210,63,.35);animation:glow 1.2s ease-in-out infinite alternate}
+@keyframes glow{to{box-shadow:inset 0 0 0 2px var(--pink),0 0 30px rgba(255,95,162,.45)}}
+
+/* ---------- scene 4: battle ---------- */
+#s4 .wrap{gap:10px;max-width:460px}
+.field{position:relative;width:100%;height:330px;border-radius:24px;overflow:hidden;
+  background:linear-gradient(180deg,#7fd3ff 0%,#bfeaff 52%,#8ed36f 52%,#6bbd52 100%)}
+.field:after{content:"";position:absolute;left:-10%;right:-10%;bottom:-30px;height:90px;background:radial-gradient(ellipse at 50% 0,#5aa845 0 60%,transparent 61%)}
+.cloud{position:absolute;background:#fff;border-radius:40px;opacity:.85;height:22px}
+.cloud:before,.cloud:after{content:"";position:absolute;background:#fff;border-radius:50%}
+.cloud:before{width:30px;height:30px;left:10px;top:-14px}.cloud:after{width:22px;height:22px;left:34px;top:-9px}
+.hpbox{position:absolute;z-index:3;background:rgba(255,255,255,.92);color:var(--ink);border-radius:12px;padding:6px 10px;min-width:150px;box-shadow:0 4px 0 rgba(0,0,0,.15);text-align:left}
+.hpbox .n{font-weight:800;font-size:13px;display:flex;justify-content:space-between;gap:8px}
+.hpbox .hp{height:8px;border-radius:6px;background:#ddd;margin-top:4px;overflow:hidden}
+.hpbox .hp i{display:block;height:100%;width:100%;background:#3ccf6b;transition:width .5s ease, background .3s}
+.hpbox .num{font-size:11px;font-weight:700;color:#666;text-align:right;margin-top:2px}
+#hpE{left:10px;top:10px}#hpP{right:10px;bottom:12px}
+.fly{position:absolute;right:14px;top:30px;width:160px;height:130px;z-index:2;animation:bob 1.6s ease-in-out infinite}
+.fly svg{width:100%;height:100%;overflow:visible}
+.fly .wing{transform-box:fill-box;transform-origin:50% 100%;animation:flap .08s linear infinite alternate}
+.fly .wing.b{transform-origin:50% 0%}
+@keyframes flap{to{transform:scaleY(.35)}}
+@keyframes bob{50%{transform:translateY(-12px) rotate(-4deg)}}
+.fly.sleep{animation:none;transform:translateY(40px) rotate(14deg)}
+.fly.sleep .wing{animation:none}
+.fly.hit{animation:hit .4s}
+.fly.dive{animation:dive .55s ease-in}
+.fly.caught{animation:none;transform:translateY(60px) scale(.8)}
+@keyframes hit{20%{transform:translateX(14px) rotate(10deg);filter:brightness(2)}60%{transform:translateX(-8px)}}
+@keyframes dive{50%{transform:translate(-150px,110px) rotate(-30deg) scale(1.2)}}
+.zzz{position:absolute;right:30px;top:10px;font-weight:900;font-size:22px;color:#4b3a8a;z-index:4;animation:zz 1.6s ease-in-out infinite}
+@keyframes zz{0%{opacity:0;transform:translate(0,10px)}50%{opacity:1}100%{opacity:0;transform:translate(14px,-20px)}}
+.hero{position:absolute;left:14px;bottom:8px;width:120px;height:156px;z-index:2;transition:transform .3s}
+.hero.atk{animation:lunge .5s ease}
+.hero.ouch{animation:hurt .45s}
+.hero.hug{animation:hugA 1s ease}
+@keyframes lunge{40%{transform:translate(120px,-30px) rotate(10deg)}}
+@keyframes hurt{25%{transform:translateX(-10px);filter:brightness(1.8) saturate(0)}60%{transform:translateX(6px)}}
+@keyframes hugA{40%,60%{transform:translate(110px,-50px) scale(1.05)}}
+.jar{position:absolute;z-index:5;right:22px;top:-150px;width:130px;height:150px;transition:top .5s cubic-bezier(.5,0,.6,1.4)}
+.jar.drop{top:118px}
+.say{position:absolute;z-index:6;background:#fff;color:var(--ink);font-weight:900;padding:8px 12px;border-radius:14px;font-size:18px;left:90px;bottom:150px;white-space:nowrap;animation:pop 1.4s ease-out forwards;transform:translateX(-50%)}
+.fx{position:absolute;z-index:6;pointer-events:none;font-size:30px;animation:pop 1.2s ease-out forwards;transform:translateX(-50%)}
+.log{width:100%;min-height:62px;background:#fff;color:var(--ink);border-radius:16px;padding:10px 14px;font-weight:600;font-size:15px;line-height:1.35;text-align:left;box-shadow:inset 0 0 0 3px var(--ink3)}
+.moves{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.move{min-height:58px;border-radius:14px;padding:8px 10px;text-align:left;background:var(--ink2);box-shadow:inset 0 0 0 2px rgba(255,255,255,.1), 0 4px 0 #120a24;font-size:12px;color:var(--muted);line-height:1.25;transition:transform .1s}
+.move b{display:block;font-size:15px;color:var(--text)}
+.move:active{transform:translateY(3px)}
+.move[disabled]{opacity:.35}
+.move.lock{opacity:.3;filter:grayscale(1)}
+.endcard{position:absolute;inset:0;z-index:8;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:20px;text-align:center;background:rgba(27,16,51,.88);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
 
 /* ---------- scene 5: wishes ---------- */
 .quest{width:100%;background:var(--ink2);border-radius:18px;padding:14px 16px;text-align:left;box-shadow:inset 0 0 0 2px rgba(255,255,255,.06)}
@@ -242,22 +299,23 @@ p.lead{color:var(--muted);font-size:16px;line-height:1.45}
       <div class="overlay" id="gStart">
         <div class="kicker">Этап 2 · мини-игра</div>
         <h2>Накорми Полину</h2>
-        <p class="lead">Води пальцем, лови вкусное. От учёбы уворачивайся: сегодня выходной.</p>
+        <p class="lead" id="gIntro">Води пальцем, лови вкусное. От учёбы уворачивайся: сегодня выходной.</p>
+        <div class="stamp" id="gGoal" style="border-color:var(--yellow);color:var(--yellow)">Цель: 10 очков = новый уровень</div>
         <div class="legend">
           <div>🍜🍣🍕🥟 <b>+1</b></div><div>🐱 котик <b>+3</b></div>
           <div>🎂 тортик <b>+5</b></div><div>📚📝⏰ <b>−❤️</b></div>
         </div>
         <button class="btn" id="gPlay">Играть!</button>
-        <button class="btn ghost" id="gSkip">я на диете (пропустить)</button>
       </div>
       <div class="overlay hide" id="gEnd">
         <div class="kicker">Результат</div>
         <div class="big22" id="gScore" style="font-size:84px">0</div>
         <h2 id="gRank">—</h2>
         <p class="lead" id="gRankTxt"></p>
+        <div class="lvlup hide" id="gLvl">LEVEL UP!</div>
         <div class="row">
-          <button class="btn y" id="go3">Дальше →</button>
-          <button class="btn ghost" id="gAgain">ещё раз</button>
+          <button class="btn y hide" id="go3">Забрать уровень →</button>
+          <button class="btn" id="gAgain">ещё раз</button>
         </div>
       </div>
     </div>
@@ -267,14 +325,28 @@ p.lead{color:var(--muted);font-size:16px;line-height:1.45}
 <!-- 3. ДОСЬЕ -->
 <section class="scene" id="s3">
   <div class="wrap">
-    <div class="kicker">Этап 3 · рассекречено</div>
-    <h2>Мы собрали на тебя досье 🕵️</h2>
-    <div class="file" style="margin-top:22px">
+    <div class="kicker">Этап 3 · персонаж</div>
+    <h2>Характеристики персонажа</h2>
+    <div class="lvlup hide" id="cLvl">LEVEL UP!</div>
+    <div class="charcard">
+      <div class="model" id="cModel"></div>
+      <div class="info">
+        <div class="lv" id="cLv">Ур. 1</div>
+        <div><b>HP:</b> <span id="cHp">40</span></div>
+        <div><b>Вкусняшек съедено:</b> <span id="cEat">0</span></div>
+        <div><b>Телосложение:</b> <span id="cBody">тростинка</span></div>
+        <div id="cNext" style="font-size:13px"></div>
+      </div>
+    </div>
+    <div class="kicker" style="margin-top:4px">Скилы</div>
+    <div class="skills" id="cSkills"></div>
+    <button class="btn" id="toFight">⚔️ В бой со стрекозой</button>
+    <div class="file" style="margin-top:30px">
       <div class="head">
         <div class="ph" style="background-image:url(media/face.jpg)"></div>
         <div>
           <h3>Полина</h3>
-          <div class="sub">Уровень 22 (только что апнулась ⬆️)</div>
+          <div class="sub">Возраст 22 (только что апнулась ⬆️)</div>
         </div>
       </div>
       <dl>
@@ -289,23 +361,25 @@ p.lead{color:var(--muted);font-size:16px;line-height:1.45}
         <small>Лечению не подлежит. И не надо. Побочный эффект: при встрече с очень вкусной едой издаёт непечатные звуки (#@%&!). Наука бессильна.</small>
       </div>
     </div>
-    <button class="btn y" id="go4">Дальше: кино 🎬</button>
+    <button class="btn" id="toFight2">⚔️ В бой со стрекозой</button>
   </div>
 </section>
 
-<!-- 4. ВИДЕО -->
+<!-- 4. БОЙ -->
 <section class="scene" id="s4">
   <div class="wrap">
-    <div class="kicker">Этап 4 · премьера</div>
-    <h2>Документальный фильм<br>«Полина в естественной среде обитания»</h2>
-    <div class="film">
-      <video id="vid" src="media/polina.mp4" poster="media/poster.jpg" playsinline webkit-playsinline controls preload="metadata"></video>
+    <div class="kicker" id="bKick">Этап 4 · босс</div>
+    <div class="field" id="field">
+      <div class="cloud" style="width:70px;left:30px;top:120px"></div>
+      <div class="cloud" style="width:56px;left:180px;top:36px;opacity:.6"></div>
+      <div class="hpbox" id="hpE"><div class="n"><span>Стрекоза Ужасная</span><span>ур.99</span></div><div class="hp"><i id="hpEbar"></i></div><div class="num" id="hpEnum">100/100</div></div>
+      <div class="fly" id="fly"></div>
+      <div class="hero" id="hero"></div>
+      <div class="hpbox" id="hpP"><div class="n"><span>Полина</span><span id="hpPlv">ур.1</span></div><div class="hp"><i id="hpPbar"></i></div><div class="num" id="hpPnum">40/40</div></div>
+      <div class="endcard hide" id="bEnd"></div>
     </div>
-    <div class="reviews">
-      <div class="rev"><span class="stars">★★★★★</span><br><b>Кинопоиск:</b> «10 из 10. Оскар уже едет, курьер — тот самый котик».</div>
-      <div class="rev"><span class="stars">★★★★★</span><br><b>Сосед снизу:</b> «Слышал всё. Пересматриваю каждый вечер».</div>
-    </div>
-    <button class="btn y" id="go5">Финал →</button>
+    <div class="log" id="log">Дикая Стрекоза Ужасная выпрыгнула из ниоткуда!</div>
+    <div class="moves" id="moves"></div>
   </div>
 </section>
 
@@ -343,7 +417,6 @@ function show(i){
   cur=i; scenes[cur].classList.add('on'); scenes[cur].scrollTop=0;
   [...dots.children].forEach((d,k)=>d.classList.toggle('on',k===i));
   dots.style.opacity = i===2 ? 0 : 1;
-  if(i!==4){ try{$('#vid').pause()}catch(e){} }
   onEnter[i]&&onEnter[i]();
 }
 [...dots.children][0].classList.add('on');
@@ -546,13 +619,35 @@ function hit(it,x,y){
 function endGame(){
   G.run=false; G.items.forEach(i=>i.n.remove());
   const s=G.score; let r=RANKS[0]; for(const x of RANKS) if(s>=x[0]) r=x;
-  $('#gScore').textContent=s; $('#gRank').textContent=r[1]; $('#gRankTxt').textContent=(G.lives<=0?'Учёба победила в этот раз. Но не в жизни! ':'')+r[2];
-  $('#gEnd').classList.remove('hide'); sfx.tada(); if(s>=10) confetti(120);
+  $('#gScore').textContent=s;
+  const pass=s>=10;
+  if(pass){
+    P.eaten+=s; pendingLvl=true;
+    $('#gRank').textContent=r[1]; $('#gRankTxt').textContent=r[2];
+    $('#gLvl').textContent=`LEVEL UP! Ур. ${P.level+1}`;
+    $('#gLvl').classList.remove('hide'); $('#go3').classList.remove('hide');
+    $('#gAgain').classList.add('hide');
+    sfx.tada(); confetti(140);
+  }else{
+    $('#gRank').textContent='Маловато покушала';
+    $('#gRankTxt').textContent=(G.lives<=0?'Учёба победила в этот раз. ':'')+`Для нового уровня нужно 10 очков, а у тебя ${s}. Голодной на стрекозу не ходят!`;
+    $('#gLvl').classList.add('hide'); $('#go3').classList.add('hide'); $('#gAgain').classList.remove('hide');
+    sfx.bad();
+  }
+  $('#gEnd').classList.remove('hide');
 }
 $('#gPlay').onclick=startGame; $('#gAgain').onclick=startGame;
-$('#gSkip').onclick=()=>{toast('Диета отменена: сегодня день рождения 🍰');setTimeout(()=>show(3),600)};
 $('#go3').onclick=()=>show(3);
-onEnter[2]=()=>{ if(!G||!G.run){ catcher.style.transform=`translateX(${W()/2}px)` } };
+onEnter[2]=()=>{
+  if(G&&G.run) return;
+  catcher.style.transform=`translateX(${W()/2}px)`;
+  $('#gEnd').classList.add('hide'); $('#gStart').classList.remove('hide');
+  const n=P.level+1;
+  $('#gGoal').textContent=`Проход №${n} · цель: 10 очков`;
+  $('#gIntro').textContent = P.level===0
+    ? 'Води пальцем, лови вкусное. От учёбы уворачивайся: сегодня выходной.'
+    : ['', 'Стрекоза побила? Значит, надо больше кушать. Наедаем следующий уровень!', 'Объятий не хватило. Нужно больше еды и больше слов (непечатных).', 'Почти победила! Последний заход за едой, говорят, там дают банку…'][P.level]||'';
+};
 
 /* ---------- 3. dossier ---------- */
 const STATS=[
@@ -566,8 +661,159 @@ const STATS=[
 const st=$('#stats');
 STATS.forEach(([n,v,c,e])=>{st.insertAdjacentHTML('beforeend',`<div class="stat"><div class="l"><span>${n}</span><span>${v}</span></div><div class="b"><i style="background:${c}" data-w="${v}"></i></div><em>${e}</em></div>`)});
 onEnter[3]=()=>{ st.querySelectorAll('.b i').forEach(i=>i.style.width='0'); setTimeout(()=>st.querySelectorAll('.b i').forEach((i,k)=>setTimeout(()=>i.style.width=i.dataset.w+'%',k*160)),300) };
-$('#go4').onclick=()=>show(4);
-$('#go5').onclick=()=>show(5);
+/* ---------- character ---------- */
+const FAT=[.72,.72,1,1.3,1.65], HPS=[40,40,60,80,100];
+const BODY=['тростинка','тростинка','уютная','пухляш','сдобная булочка'];
+const SKILLS=[
+  {k:'hit',lv:1,ic:'🥊',n:'Удар',d:'Бокс-аниме не прошли даром. 8 урона, но стрекоза вёрткая'},
+  {k:'hug',lv:2,ic:'🤗',n:'Обнимашки',d:'Обнимает так, что стрекоза засыпает на 2 хода. 1 раз за бой'},
+  {k:'mat',lv:3,ic:'🤬',n:'Мат',d:'#@%&! 35 урона моральным ущербом. Будит спящих. 1 раз за бой'},
+  {k:'jar',lv:4,ic:'🫙',n:'Банка',d:'Ловит стрекозу, если она спит или ослаблена (HP ≤ 60)'}
+];
+let modelId=0;
+function modelSVG(){const id=++modelId;return `<svg viewBox="0 0 200 260"><defs>
+<pattern id="pl${id}" width="14" height="14" patternUnits="userSpaceOnUse"><rect width="14" height="14" fill="#c71f2d"/><rect y="5" width="14" height="4" fill="#7d0f1a" opacity=".85"/><rect x="5" width="4" height="14" fill="#7d0f1a" opacity=".85"/><rect y="12" width="14" height="1" fill="#000" opacity=".5"/><rect x="12" width="1" height="14" fill="#000" opacity=".5"/></pattern>
+<clipPath id="fc${id}"><circle cx="100" cy="58" r="34"/></clipPath></defs>
+<ellipse class="shd" cx="100" cy="252" rx="56" ry="7" fill="rgba(0,0,0,.25)"/>
+<g class="bod">
+<rect x="66" y="182" width="32" height="62" rx="12" fill="url(#pl${id})"/><rect x="102" y="182" width="32" height="62" rx="12" fill="url(#pl${id})"/>
+<ellipse cx="80" cy="246" rx="18" ry="8" fill="#fff"/><ellipse cx="120" cy="246" rx="18" ry="8" fill="#fff"/>
+<rect x="62" y="170" width="76" height="30" rx="12" fill="url(#pl${id})"/>
+<rect x="42" y="104" width="17" height="68" rx="8" fill="#151515" transform="rotate(12 50 108)"/><rect x="141" y="104" width="17" height="68" rx="8" fill="#151515" transform="rotate(-12 150 108)"/>
+<circle cx="38" cy="172" r="9" fill="#efc2a9"/><circle cx="162" cy="172" r="9" fill="#efc2a9"/>
+<path d="M58 104 Q100 92 142 104 L148 166 Q100 194 52 166 Z" fill="#151515"/>
+<text x="100" y="148" text-anchor="middle" font-family="Unbounded,Rubik,sans-serif" font-weight="900" font-size="24" fill="#ffd23f">22</text>
+</g>
+<rect x="91" y="84" width="18" height="18" fill="#e3b49b"/>
+<ellipse cx="100" cy="60" rx="44" ry="47" fill="#3b2418"/>
+<image href="media/face.jpg" x="64" y="22" width="72" height="72" clip-path="url(#fc${id})" preserveAspectRatio="xMidYMid slice"/>
+<circle cx="100" cy="58" r="34" fill="none" stroke="#3b2418" stroke-width="3"/>
+<ellipse class="chin" cx="100" cy="95" rx="0" ry="0" fill="#e9bba3" stroke="#d29c84" stroke-width="1.5"/>
+</svg>`}
+function setF(el,f){
+  el.querySelector('.bod').setAttribute('transform',`translate(100 0) scale(${f} 1) translate(-100 0)`);
+  el.querySelector('.shd').setAttribute('rx',56*f);
+  const c=el.querySelector('.chin'); const k=Math.max(0,f-1.1);
+  c.setAttribute('rx',k?14+k*16:0); c.setAttribute('ry',k?4+k*6:0);
+}
+function tweenF(el,a,b,ms=1200){const t0=performance.now();const f=n=>{const k=Math.min(1,(n-t0)/ms);const e=k<1?1+Math.sin(k*Math.PI*3)*(1-k)*.25:1;setF(el,a+(b-a)*Math.min(1,k*1.4)*e);if(k<1)requestAnimationFrame(f)};requestAnimationFrame(f)}
+const P={level:0,eaten:0}; let pendingLvl=false;
+const cModel=$('#cModel'); cModel.innerHTML=modelSVG(); setF(cModel,FAT[0]);
+onEnter[3]=()=>{
+  let fresh=null;
+  if(pendingLvl&&P.level<4){pendingLvl=false; const prev=FAT[P.level]; P.level++; fresh=SKILLS[P.level-1].k;
+    $('#cLvl').textContent=`LEVEL UP! Ур. ${P.level} · новый скил: ${SKILLS[P.level-1].n}`; $('#cLvl').classList.remove('hide');
+    setF(cModel,prev); setTimeout(()=>{tweenF(cModel,prev,FAT[P.level]);sfx.tada();confetti(120)},500);
+  } else { $('#cLvl').classList.add('hide'); setF(cModel,FAT[P.level]); }
+  $('#cLv').textContent=`Ур. ${P.level}`; $('#cHp').textContent=HPS[P.level]; $('#cEat').textContent=P.eaten; $('#cBody').textContent=BODY[P.level];
+  $('#cNext').textContent=P.level<4?`Следующий уровень: ещё один заход за едой`:'Максимальный уровень. Абсолютная булочка.';
+  $('#cSkills').innerHTML=SKILLS.map(s=>`<div class="skill ${s.lv>P.level?'locked':''} ${s.k===fresh?'new':''}"><b>${s.lv>P.level?'🔒':s.ic} ${s.n}</b>${s.lv>P.level?`Откроется на ур. ${s.lv}`:s.d}</div>`).join('');
+  st.querySelectorAll('.b i').forEach(i=>i.style.width='0'); setTimeout(()=>st.querySelectorAll('.b i').forEach((i,k)=>setTimeout(()=>i.style.width=i.dataset.w+'%',k*160)),300);
+};
+$('#toFight').onclick=$('#toFight2').onclick=()=>show(4);
+
+/* ---------- battle ---------- */
+const FLY=`<svg viewBox="0 0 160 130">
+<g fill="#bfefff" fill-opacity=".75" stroke="#5fb8d6" stroke-width="1.5">
+<ellipse class="wing" cx="78" cy="34" rx="42" ry="11" transform="rotate(-14 78 34)"/><ellipse class="wing" cx="98" cy="36" rx="38" ry="10" transform="rotate(10 98 36)"/>
+<ellipse class="wing b" cx="78" cy="86" rx="40" ry="10" transform="rotate(14 78 86)"/><ellipse class="wing b" cx="98" cy="84" rx="36" ry="9" transform="rotate(-10 98 84)"/></g>
+<g stroke="#1b4d57" stroke-width="3" stroke-linecap="round"><path d="M60 72l-8 16M70 74l-2 18M78 72l6 16"/></g>
+<g fill="#16a3b5">${[0,1,2,3,4,5,6].map(i=>`<ellipse cx="${92+i*9.5}" cy="${62+i*.6}" rx="${8-i*.5}" ry="${7-i*.45}"/>`).join('')}</g>
+<ellipse cx="68" cy="60" rx="17" ry="14" fill="#118a9a"/>
+<circle cx="38" cy="50" r="15" fill="#3be38a"/><circle cx="46" cy="66" r="15" fill="#3be38a"/>
+<circle cx="34" cy="46" r="4" fill="#fff"/><circle cx="42" cy="62" r="4" fill="#fff"/>
+<circle cx="40" cy="52" r="5" fill="#0b2a1a"/><circle cx="48" cy="68" r="5" fill="#0b2a1a"/>
+<path d="M28 36l20 10M36 56l18 4" stroke="#0b2a1a" stroke-width="4" stroke-linecap="round"/>
+<path d="M26 74q8-6 14 2" stroke="#0b2a1a" stroke-width="3" fill="none" stroke-linecap="round"/>
+</svg>`;
+const JAR=`<svg viewBox="0 0 130 150"><rect x="14" y="20" width="102" height="122" rx="18" fill="rgba(235,248,255,.45)" stroke="#fff" stroke-width="4"/><rect x="8" y="8" width="114" height="20" rx="6" fill="#f2f2f2" stroke="#cfd8e0" stroke-width="3"/><path d="M30 40v80" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity=".7"/></svg>`;
+const fly=$('#fly'), hero=$('#hero'), field=$('#field'), logEl=$('#log');
+fly.innerHTML=FLY; hero.innerHTML=modelSVG();
+let B=null;
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+const rnd=a=>a[Math.floor(Math.random()*a.length)];
+async function say(t){logEl.textContent=t; await wait(Math.max(900,t.length*28))}
+function bars(){
+  const e=Math.max(0,B.e), p=Math.max(0,B.p);
+  $('#hpEbar').style.width=e+'%'; $('#hpEbar').style.background=e>50?'#3ccf6b':e>20?'#f5b82e':'#ef4b4b'; $('#hpEnum').textContent=`${e}/100`;
+  const pp=p/B.pm*100; $('#hpPbar').style.width=pp+'%'; $('#hpPbar').style.background=pp>50?'#3ccf6b':pp>20?'#f5b82e':'#ef4b4b'; $('#hpPnum').textContent=`${p}/${B.pm}`;
+}
+function anim(el,c,ms){el.classList.remove(c);void el.offsetWidth;el.classList.add(c);setTimeout(()=>el.classList.remove(c),ms)}
+function fx(t,x,y){const d=document.createElement('div');d.className='fx';d.textContent=t;d.style.left=x+'px';d.style.top=y+'px';field.appendChild(d);setTimeout(()=>d.remove(),1200)}
+function renderMoves(){
+  $('#moves').innerHTML=SKILLS.map(s=>{const lock=s.lv>P.level, used=B.used[s.k];
+    return `<button class="move ${lock?'lock':''}" data-k="${s.k}" ${lock||used||B.busy||B.over?'disabled':''}><b>${lock?'🔒':s.ic} ${s.n}</b>${lock?`ур. ${s.lv}`:used?'уже использовано':s.d.split('.')[0]}</button>`}).join('');
+  $('#moves').querySelectorAll('.move').forEach(b=>b.onclick=()=>turn(b.dataset.k));
+}
+onEnter[4]=()=>{
+  B={p:HPS[P.level],pm:HPS[P.level],e:100,sleep:0,used:{},busy:false,over:false,heals:0};
+  setF(hero,FAT[P.level]); fly.className='fly'; field.querySelectorAll('.zzz,.jar').forEach(n=>n.remove());
+  $('#bEnd').classList.add('hide'); $('#hpPlv').textContent='ур.'+P.level;
+  $('#bKick').textContent=`Этап 4 · босс · попытка №${P.level}`;
+  logEl.textContent=P.level===1?'Дикая Стрекоза Ужасная влетела в форточку! Что сделает Полина?':P.level===4?'Стрекоза снова здесь. Но у Полины теперь есть БАНКА.':'Стрекоза вернулась. Полина тоже, и она стала больше!';
+  bars(); renderMoves();
+};
+function setSleep(n){B.sleep=n; fly.classList.toggle('sleep',n>0); field.querySelectorAll('.zzz').forEach(z=>z.remove());
+  if(n>0){const z=document.createElement('div');z.className='zzz';z.textContent='Z z z';field.appendChild(z)}}
+async function turn(k){
+  if(B.busy||B.over) return; B.busy=true; renderMoves();
+  const fr=fly.getBoundingClientRect(), r0=field.getBoundingClientRect(); const fx0=fr.left-r0.left+fr.width/2, fy0=fr.top-r0.top+30;
+  if(k==='hit'){
+    anim(hero,'atk',500); await wait(250);
+    const sleeping=B.sleep>0;
+    if(!sleeping&&Math.random()<.35){ sfx.puff(); fx('💨',fx0,fy0); await say('Полина бьёт… Промах! Стрекоза увернулась и показала язык.'); }
+    else{ const d=sleeping?12:8; B.e-=d; sfx.bad(); anim(fly,'hit',400); fx('💥 −'+d,fx0,fy0); bars(); await say(sleeping?`Удар по спящей стрекозе! −${d}. Не по-самурайски, но работает.`:`Хук справа! −${d}. Бокс-аниме не прошли даром.`); }
+  }
+  if(k==='hug'){
+    B.used.hug=true; anim(hero,'hug',1000); await wait(400);
+    for(let i=0;i<5;i++) setTimeout(()=>fx('💗',fx0-30+Math.random()*60,fy0+Math.random()*30),i*120);
+    sfx.meow(); setSleep(2); await say('Полина обнимает стрекозу… Стрекоза размякла и уснула 💤');
+  }
+  if(k==='mat'){
+    B.used.mat=true; const s=document.createElement('div'); s.className='say'; s.textContent=rnd(['#@%&!!','*****!!!','#$@%&*!!']); field.appendChild(s); setTimeout(()=>s.remove(),1400);
+    sfx.bleep(); await wait(350); B.e-=35; anim(fly,'hit',400); fx('😱 −35',fx0,fy0); bars();
+    const woke=B.sleep>0; setSleep(0);
+    await say(woke?'Полина высказала всё, что думает (цензура). −35 морального ущерба… и стрекоза проснулась.':'Полина высказала всё, что думает (цензура). Стрекоза в моральном шоке! −35');
+  }
+  if(k==='jar'){
+    const j=document.createElement('div'); j.className='jar'; j.innerHTML=JAR; field.appendChild(j);
+    await wait(30); j.classList.add('drop'); await wait(550);
+    if(B.sleep>0||B.e<=60){
+      fly.className='fly caught'; field.querySelectorAll('.zzz').forEach(z=>z.remove()); sfx.tada(); B.e=0; bars();
+      await say('ХЛОП! Стрекоза поймана в банку! 🫙'); return win();
+    }else{
+      sfx.puff(); await wait(300); j.classList.remove('drop'); setTimeout(()=>j.remove(),600);
+      await say('Стрекоза слишком бодрая и выскользнула из-под банки! Сначала её надо утомить или усыпить.');
+    }
+  }
+  // страховка сюжета: до 4 уровня стрекоза не побеждается
+  if(P.level<4&&B.e<15){ B.e+=20; bars(); fx('🥪 +20',fx0,fy0); await say('Стрекоза съела Полинин бутерброд и подлечилась +20. Наглость!'); }
+  if(B.e<=0&&P.level<4){B.e=5;bars()}
+  // ход стрекозы
+  if(B.sleep>0){
+    setSleep(B.sleep-1);
+    await say(B.sleep>0?'Стрекоза сладко спит… 💤':'Стрекоза проснулась. И она ЗЛАЯ.');
+  }else{
+    anim(fly,'dive',550); await wait(300);
+    let d=17+Math.floor(Math.random()*6), line=rnd(['Стрекоза жужжит прямо в ухо!','Стрекоза пикирует в лоб!','Стрекоза садится на нос и смотрит в душу!','Стрекоза нарезает круги, Полина в панике!']);
+    if(P.level===4&&Math.random()<.5){d=Math.round(d/2);line='Стрекоза отскочила от пузика! Урон наполовину.'}
+    B.p-=d; sfx.bad(); anim(hero,'ouch',450); const hr=hero.getBoundingClientRect(); fx('−'+d,hr.left-r0.left+60,hr.top-r0.top); bars();
+    await say(`${line} −${d}`);
+  }
+  if(B.p<=0) return lose();
+  B.busy=false; renderMoves();
+}
+function lose(){
+  B.over=true; renderMoves();
+  const t=['','Один удар против стрекозы — маловато. Нужно прокачаться!','Обнимашки работают, но стрекоза просыпается. Нужно что-то посильнее…','Почти! Говорят, на следующем уровне выдают банку 🫙'][P.level];
+  $('#bEnd').innerHTML=`<div style="font-size:54px">😵</div><h2>Поражение</h2><p class="lead">${t}</p><button class="btn y" id="backEat">🍜 Вернуться к еде</button>`;
+  $('#bEnd').classList.remove('hide'); $('#backEat').onclick=()=>show(2);
+}
+function win(){
+  B.over=true; renderMoves(); confetti(220); hbd();
+  $('#bEnd').innerHTML=`<div style="font-size:54px">🏆</div><h2>Победа!</h2><p class="lead">Стрекоза поймана и гуманно выпущена в окно. Достижение: «Гроза насекомых» 🫙</p><button class="btn y" id="toWish">Забрать награду →</button>`;
+  setTimeout(()=>{$('#bEnd').classList.remove('hide'); $('#toWish').onclick=()=>show(5)},1200);
+}
 
 /* ---------- 5. wishes ---------- */
 function anim(el,pel,from,to,ms,fmt){return new Promise(res=>{const t0=performance.now();
